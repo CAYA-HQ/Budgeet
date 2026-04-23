@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/CAYA-HQ/Spendwise-backend/internal/auth"
+	"github.com/CAYA-HQ/Spendwise-backend/internal/expenses"
 	"github.com/CAYA-HQ/Spendwise-backend/pkg/db"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -27,6 +28,7 @@ func main() {
 	v1 := r.Group("/api/v1")
 	{
 		auth.RegisterRoutes(v1, db.DB)
+		expenses.RegisterRoutes(v1, db.DB)
 	}
 
 	r.GET("/health", func(c *gin.Context) {

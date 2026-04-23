@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/CAYA-HQ/Spendwise-backend/pkg/db/migrations"
 	_ "github.com/lib/pq"
 )
 
@@ -43,5 +44,9 @@ func InitDB() {
 
 	if err = DB.Ping(); err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
+	if err = migrations.Run(DB); err != nil {
+		log.Fatalf("Failed to run database migrations: %v", err)
 	}
 }

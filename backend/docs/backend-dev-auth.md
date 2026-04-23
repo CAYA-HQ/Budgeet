@@ -21,7 +21,7 @@ Current expectations:
 
 - PostgreSQL must be available before the server starts.
 - The running server uses `backend/pkg/db/db.go`, which opens a raw `database/sql` connection and pings the database.
-- The current startup path does not run migrations automatically.
+- The current startup path runs versioned SQL migrations automatically before serving traffic.
 - `JWT_SECRET` must be present in the environment for token signing and token validation.
 - `PORT` defaults to `8080` if not set.
 
@@ -213,8 +213,16 @@ When adding new endpoints:
 
 - Registration validates email format explicitly, but login currently does not.
 - `logout` uses a string comparison on `err.Error() == "UNAUTHORIZED"` instead of a typed/shared error.
-- The server startup path does not currently call the GORM auto-migration code in `backend/internal/database/database.go`.
+- The server startup path uses `backend/pkg/db/migrations` and does not rely on the older GORM auto-migration code in `backend/internal/database/database.go`.
 - There is no refresh endpoint yet, so clients must log in again after refresh-token expiry or after access-token expiry if no refresh flow is added.
+
+## Migration Notes
+
+- Startup applies migrations in `backend/pkg/db/migrations` using the `schema_migrations` table.
+- Existing databases with legacy string-based `users.id` values are upgraded to UUIDs using shadow columns and transactional swaps.
+- Legacy IDs that already contain UUID strings are preserved; non-UUID legacy IDs are remapped to fresh UUIDs and dependent `refresh_tokens.user_id` / `expenses.user_id` values are updated in the same transaction.
+- If a child row cannot be mapped to a user during migration, startup fails fast instead of partially mutating the schema.
+- Back up local or shared PostgreSQL data before first running the upgraded server against an older database.
 
 ## Suggested Extension Rules
 
