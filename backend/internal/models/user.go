@@ -1,9 +1,13 @@
+// Package models defines the persisted application data shapes.
+// These structs are shared across database and API layers.
 package models
 
 import (
 	"time"
 )
 
+// User represents an authenticated application account.
+// It stores identity details and the hashed password record.
 type User struct {
 	ID           string    `db:"id"            json:"id"           gorm:"primaryKey"`
 	Email        string    `db:"email"         json:"email"        gorm:"unique;not null"`

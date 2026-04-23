@@ -1,3 +1,5 @@
+// Package middleware contains reusable Gin middleware components.
+// These helpers enforce shared request policies across routes.
 package middleware
 
 import (
@@ -11,6 +13,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// AuthMiddleware validates bearer tokens before protected handlers run.
+// It extracts user identity from JWT claims and stores it in context.
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")

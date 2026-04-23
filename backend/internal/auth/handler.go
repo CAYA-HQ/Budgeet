@@ -1,3 +1,5 @@
+// Package auth contains authentication business logic and HTTP adapters.
+// It handles token creation, credential checks, and route wiring.
 package auth
 
 import (
@@ -9,19 +11,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// AuthHandler translates HTTP requests into auth service calls.
+// It validates input and formats consistent API responses.
 type AuthHandler struct {
 	service *AuthService
 }
 
+// NewAuthHandler creates an HTTP handler backed by the auth service.
+// The handler exposes register, login, and logout endpoints.
 func NewAuthHandler(service *AuthService) *AuthHandler {
 	return &AuthHandler{service: service}
 }
 
+// AuthRequest represents the JSON payload accepted by auth endpoints.
+// It currently requires an email and password from the client.
 type AuthRequest struct {
 	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
+// Register validates input and creates a new user account.
+// It returns the created user plus freshly issued auth tokens.
 func (h *AuthHandler) Register(c *gin.Context) {
 	var req AuthRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -56,6 +66,8 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}, nil)
 }
 
+// Login validates credentials and returns new access credentials.
+// It responds with the user identity and both JWT tokens on success.
 func (h *AuthHandler) Login(c *gin.Context) {
 	var req AuthRequest
 	if err := h.shouldBindJSON(c, &req); err != nil {
@@ -79,6 +91,8 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	}, nil)
 }
 
+// Logout revokes the refresh token sent in the authorization header.
+// It returns no content when the token is successfully invalidated.
 func (h *AuthHandler) Logout(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
@@ -100,6 +114,8 @@ func (h *AuthHandler) Logout(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+// shouldBindJSON parses the request body into the target object.
+// It sends a validation error response when binding fails.
 func (h *AuthHandler) shouldBindJSON(c *gin.Context, obj interface{}) error {
 	if err := c.ShouldBindJSON(obj); err != nil {
 		response.Error(c, http.StatusBadRequest, "VALIDATION_ERROR", "Invalid request body")
@@ -108,6 +124,8 @@ func (h *AuthHandler) shouldBindJSON(c *gin.Context, obj interface{}) error {
 	return nil
 }
 
+// isValidEmail checks whether the input matches the accepted email format.
+// It normalizes casing before applying the validation regex.
 func isValidEmail(email string) bool {
 	re := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
 	return re.MatchString(strings.ToLower(email))

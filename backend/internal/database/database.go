@@ -1,3 +1,5 @@
+// Package database manages the GORM database connection.
+// It also handles schema migration for application models.
 package database
 
 import (
@@ -10,8 +12,12 @@ import (
 	"gorm.io/gorm"
 )
 
+// DB stores the shared GORM database handle.
+// It is initialized once during application startup.
 var DB *gorm.DB
 
+// InitDB opens the configured PostgreSQL connection.
+// It also runs the required auto-migrations before serving traffic.
 func InitDB() {
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {

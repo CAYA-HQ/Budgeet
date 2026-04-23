@@ -1,11 +1,13 @@
+// Package models defines the persisted application data shapes.
+// These structs are shared across database and API layers.
 package models
 
 import (
 	"time"
 )
 
-// RefreshToken maps to the `refresh_tokens` table.
-// We store a SHA-256 hash of the token, never the raw value.
+// RefreshToken represents a stored refresh token record.
+// It keeps only a SHA-256 hash, never the raw token value.
 type RefreshToken struct {
 	ID        string    `db:"id"         json:"id"        gorm:"primaryKey"`
 	UserID    string    `db:"user_id"    json:"userId"    gorm:"not null;index"`

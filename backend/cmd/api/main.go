@@ -1,3 +1,5 @@
+// Package main boots the HTTP API server.
+// It wires environment loading, routing, and startup.
 package main
 
 import (
@@ -10,6 +12,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// main initializes dependencies and starts the Gin server.
+// It also exposes the versioned API and health check routes.
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found, reading from environment")

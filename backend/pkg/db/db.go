@@ -1,3 +1,5 @@
+// Package db manages the low-level SQL database connection.
+// It exposes a shared handle used by the auth service layer.
 package db
 
 import (
@@ -9,8 +11,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// DB stores the shared sql.DB connection pool.
+// It is set during startup and reused across requests.
 var DB *sql.DB
 
+// InitDB opens and verifies the PostgreSQL connection.
+// It supports either DATABASE_URL or split DB environment variables.
 func InitDB() {
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
