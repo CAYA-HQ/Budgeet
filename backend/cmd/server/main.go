@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/CAYA-HQ/Spendwise-backend/internal/database"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -12,6 +13,8 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found, reading from environment")
 	}
+
+	database.InitDB()
 
 	r := gin.Default()
 
