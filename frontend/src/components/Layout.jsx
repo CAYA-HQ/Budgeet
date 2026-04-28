@@ -4,7 +4,8 @@ function Layout({ children }) {
   return (
     <div className="app">
       <nav>
-        <Link to="/">Dashboard</Link>
+        <Link to="/">Budgeet</Link>
+        <Link to="/dashboard">Dashboard</Link>
         <Link to="/expenses">Expenses</Link>
         <Link to="/budget">Budget</Link>
         <Link to="/insights">Insights</Link>
