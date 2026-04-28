@@ -1,4 +1,4 @@
-# SpendWize
+# Budgeet
 A lightweight, mobile-first expense tracking application that helps users log daily expenses and understand their spending behavior.
 
 ## Tech Stack
@@ -9,13 +9,16 @@ A lightweight, mobile-first expense tracking application that helps users log da
 
 ## Project Structure
 Feature-based folder structure. Each developer owns a feature folder.
-spendwize/
+Budgeet/
 ├── frontend/
 │   ├── public/
 │   ├── src/
 │   │   ├── assets/
 │   │   ├── components/        # Shared/reusable components only
 │   │   ├── features/
+│   │   │   ├── landing/
+│   │   │   ├── intro/
+│   │   │   ├── auth/
 │   │   │   ├── dashboard/
 │   │   │   ├── expenses/
 │   │   │   ├── budget/
@@ -39,7 +42,10 @@ spendwize/
 ## Pages & Routes
 | Page | Route |
 |------|-------|
-| Dashboard | `/` |
+| Landing | `/` |
+| Intro | `/intro` |
+| Auth | `/auth` |
+| Dashboard | `/dashboard` |
 | Expenses | `/expenses` |
 | Budget | `/budget` |
 | Insights | `/insights` |
@@ -66,4 +72,4 @@ spendwize/
 | Backend Dev | /backend folder, API contract |
 
 ## Team
-Team 2 — SpendWize
+Team 2 — Budgeet
