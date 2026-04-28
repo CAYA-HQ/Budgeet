@@ -1,5 +1,4 @@
 # SpendWize
-
 A lightweight, mobile-first expense tracking application that helps users log daily expenses and understand their spending behavior.
 
 ## Tech Stack
@@ -67,4 +66,4 @@ spendwize/
 | Backend Dev | /backend folder, API contract |
 
 ## Team
-Group B — SpendWize
+Team 2 — SpendWize
