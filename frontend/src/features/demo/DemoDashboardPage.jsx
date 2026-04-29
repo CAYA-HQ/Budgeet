@@ -3,6 +3,7 @@ import FilterTabs from '../../components/FilterTabs'
 import TotalSpendCard from '../../components/TotalSpendCard'
 import BudgetProgressBar from '../../components/BudgetProgressBar'
 import TransactionList from '../../components/TransactionList'
+import BottomNav from '../../components/BottomNav'
 
 const demoData = {
   totalSpend: 45200,
@@ -24,8 +25,16 @@ function DemoDashboardPage() {
     console.log('Active filter:', filter)
   }
 
+  const handleAddExpense = () => {
+    console.log('Add Expense clicked')
+  }
+
+  const handleAddIncome = () => {
+    console.log('Add Income clicked')
+  }
+
   return (
-    <div>
+    <div className="demo-dashboard">
       <GreetingHeader />
       <FilterTabs onFilterChange={handleFilterChange} />
       <TotalSpendCard amount={demoData.totalSpend} />
@@ -34,6 +43,10 @@ function DemoDashboardPage() {
         total={demoData.budget.total}
       />
       <TransactionList transactions={demoData.transactions} />
+      <BottomNav
+        onAddExpense={handleAddExpense}
+        onAddIncome={handleAddIncome}
+      />
     </div>
   )
 }
