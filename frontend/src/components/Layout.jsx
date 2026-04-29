@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
+import Header from './ui/Header'
 
 function Layout({ children }) {
   return (
     <div className="app">
-      <nav>
+      <Header />
+      {/* <nav>
         <Link to="/">Budgeet</Link>
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/expenses">Expenses</Link>
         <Link to="/budget">Budget</Link>
         <Link to="/insights">Insights</Link>
-      </nav>
+      </nav> */}
       <main>
         {children}
       </main>
