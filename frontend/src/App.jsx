@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LandingPage from './features/landing/LandingPage'
-import IntroPage from './features/intro/IntroPage'
+import DemoDashboardPage from './features/demo/DemoDashboardPage'
 import AuthPage from './features/auth/AuthPage'
 import DashboardPage from './features/dashboard/DashboardPage'
 import ExpensesPage from './features/expenses/ExpensesPage'
@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/intro" element={<IntroPage />} />
+        <Route path="/demo" element={<DemoDashboardPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/expenses" element={<ExpensesPage />} />

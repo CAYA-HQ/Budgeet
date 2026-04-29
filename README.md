@@ -17,7 +17,7 @@ Budgeet/
 │   │   ├── components/        # Shared/reusable components only
 │   │   ├── features/
 │   │   │   ├── landing/
-│   │   │   ├── intro/
+│   │   │   ├── demo/
 │   │   │   ├── auth/
 │   │   │   ├── dashboard/
 │   │   │   ├── expenses/
@@ -40,15 +40,20 @@ Budgeet/
 6. Run `npm run dev`
 
 ## Pages & Routes
-| Page | Route |
-|------|-------|
-| Landing | `/` |
-| Intro | `/intro` |
-| Auth | `/auth` |
-| Dashboard | `/dashboard` |
-| Expenses | `/expenses` |
-| Budget | `/budget` |
-| Insights | `/insights` |
+| Page | Route | Access |
+|------|-------|--------|
+| Landing | `/` | Everyone |
+| Demo Dashboard | `/demo` | Guest users only |
+| Auth | `/auth` | Everyone |
+| Dashboard | `/dashboard` | Logged in users only |
+| Expenses | `/expenses` | Logged in users only |
+| Budget | `/budget` | Logged in users only |
+| Insights | `/insights` | Logged in users only |
+
+## User Flow
+Landing Page
+├── Login → Auth Page → Dashboard
+└── Guest → Demo Dashboard → Get Started → Auth Page (Register) → Dashboard
 
 ## Branching Strategy
 - `main` → production ready code only
@@ -64,12 +69,11 @@ Budgeet/
 ## Component Ownership
 | Developer | Feature |
 |-----------|---------|
-| Frontend Dev 1 | Dashboard |
-| Frontend Dev 2 | Expenses |
-| Frontend Dev 3 | Budget |
-| Frontend Dev 4 | Insights + Shared Components |
-| Designer | Design system, assets, UI review |
-| Backend Dev | /backend folder, API contract |
+| Suru | Landing Page |
+| Tosin | Demo Dashboard |
+| Emmanuel Oku | Auth Page + Backend |
+| Team Lead | Dashboard, Expenses, Budget, Insights |
+| Emmanuel Designer | Design system, assets, UI review |
 
 ## Team
 Team 2 — Budgeet
