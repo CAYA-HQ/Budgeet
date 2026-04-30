@@ -4,6 +4,7 @@ import TotalSpendCard from '../../components/TotalSpendCard'
 import BudgetProgressBar from '../../components/BudgetProgressBar'
 import TransactionList from '../../components/TransactionList'
 import BottomNav from '../../components/BottomNav'
+import SideNav from '../../components/SideNav'
 
 const mockData = {
   user: {
@@ -31,15 +32,18 @@ function DashboardPage() {
   }
 
   return (
-    <div className="dashboard">
-      <GreetingHeader name={mockData.user.name} />
-      <FilterTabs onFilterChange={handleFilterChange} />
-      <TotalSpendCard amount={mockData.totalSpend} />
-      <BudgetProgressBar
-        spent={mockData.budget.spent}
-        total={mockData.budget.total}
-      />
-      <TransactionList transactions={mockData.transactions} />
+    <div className="app-layout">
+      <SideNav />
+      <div className="main-content">
+        <GreetingHeader name={mockData.user.name} />
+        <FilterTabs onFilterChange={handleFilterChange} />
+        <TotalSpendCard amount={mockData.totalSpend} />
+        <BudgetProgressBar
+          spent={mockData.budget.spent}
+          total={mockData.budget.total}
+        />
+        <TransactionList transactions={mockData.transactions} />
+      </div>
       <BottomNav
         onAddExpense={handleAddExpense}
         onAddIncome={handleAddIncome}
