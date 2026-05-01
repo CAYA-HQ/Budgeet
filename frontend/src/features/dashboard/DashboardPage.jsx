@@ -8,46 +8,53 @@ import BottomNav from '../../components/BottomNav'
 import SideNav from '../../components/SideNav'
 import '../../styles/dashboard.css'
 
-const mockData = {
-  user: {
-    name: 'Ade',
+const allMockData = {
+  user: { name: 'Ade' },
+  budget: { spent: 0, total: null },
+  today: {
+    totalSpend: 0,
+    transactions: [],
   },
-  totalSpend: 0,
-  budget: {
-    spent: 0,
-    total: null,
+  thisWeek: {
+    totalSpend: 0,
+    transactions: [],
   },
-  transactions: [],
+  thisMonth: {
+    totalSpend: 0,
+    transactions: [],
+  },
 }
 
 function DashboardPage() {
+  const [activeFilter, setActiveFilter] = useState('today')
   const [fabOpen, setFabOpen] = useState(false)
 
-  const handleFilterChange = (filter) => {
-    console.log('Active filter:', filter)
+  const getFilteredData = () => {
+    switch (activeFilter) {
+      case 'thisWeek': return allMockData.thisWeek
+      case 'thisMonth': return allMockData.thisMonth
+      default: return allMockData.today
+    }
   }
 
-  const handleAddExpense = () => {
-    setFabOpen(true)
-  }
+  const filteredData = getFilteredData()
 
-  const handleAddIncome = () => {
-    setFabOpen(false)
-  }
+  const handleAddExpense = () => setFabOpen(true)
+  const handleAddIncome = () => setFabOpen(false)
 
   return (
     <div className="app-layout">
       <SideNav />
       <div className="main-content">
-        <GreetingHeader name={mockData.user.name} />
-        <FilterTabs onFilterChange={handleFilterChange} />
-        <TotalSpendCard amount={mockData.totalSpend} />
+        <GreetingHeader name={allMockData.user.name} />
+        <FilterTabs onFilterChange={setActiveFilter} />
+        <TotalSpendCard amount={filteredData.totalSpend} />
         <BudgetProgressBar
-          spent={mockData.budget.spent}
-          total={mockData.budget.total}
+          spent={allMockData.budget.spent}
+          total={allMockData.budget.total}
         />
         <TransactionList
-          transactions={mockData.transactions}
+          transactions={filteredData.transactions}
           onAddExpense={handleAddExpense}
         />
       </div>
