@@ -1,9 +1,9 @@
 import TransactionItem from './TransactionItem'
 import EmptyState from './EmptyState'
 
-function TransactionList({ transactions }) {
+function TransactionList({ transactions, onAddExpense }) {
   if (!transactions || transactions.length === 0) {
-    return <EmptyState />
+    return <EmptyState onAddExpense={onAddExpense} />
   }
 
   return (

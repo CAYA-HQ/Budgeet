@@ -1,20 +1,13 @@
-import { useState } from 'react'
 import { Plus, X, Receipt, Wallet } from 'lucide-react'
 
-function FABMenu({ onAddExpense, onAddIncome }) {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const handleToggle = () => {
-    setIsOpen(!isOpen)
-  }
-
+function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
   const handleAddExpense = () => {
-    setIsOpen(false)
+    onToggle(false)
     if (onAddExpense) onAddExpense()
   }
 
   const handleAddIncome = () => {
-    setIsOpen(false)
+    onToggle(false)
     if (onAddIncome) onAddIncome()
   }
 
@@ -23,16 +16,16 @@ function FABMenu({ onAddExpense, onAddIncome }) {
       {isOpen && (
         <div className="fab-options">
           <button className="fab-option" onClick={handleAddIncome}>
-            <Wallet size={20} />
+            <Wallet size={18} />
             <span>Add Income</span>
           </button>
           <button className="fab-option" onClick={handleAddExpense}>
-            <Receipt size={20} />
+            <Receipt size={18} />
             <span>Add Expense</span>
           </button>
         </div>
       )}
-      <button className="fab-button" onClick={handleToggle}>
+      <button className="fab-button" onClick={() => onToggle(!isOpen)}>
         {isOpen ? <X size={24} /> : <Plus size={24} />}
       </button>
     </div>

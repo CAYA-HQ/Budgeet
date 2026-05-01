@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import GreetingHeader from '../../components/GreetingHeader'
 import FilterTabs from '../../components/FilterTabs'
 import TotalSpendCard from '../../components/TotalSpendCard'
@@ -20,16 +21,18 @@ const mockData = {
 }
 
 function DashboardPage() {
+  const [fabOpen, setFabOpen] = useState(false)
+
   const handleFilterChange = (filter) => {
     console.log('Active filter:', filter)
   }
 
   const handleAddExpense = () => {
-    console.log('Add Expense clicked')
+    setFabOpen(true)
   }
 
   const handleAddIncome = () => {
-    console.log('Add Income clicked')
+    setFabOpen(false)
   }
 
   return (
@@ -43,9 +46,14 @@ function DashboardPage() {
           spent={mockData.budget.spent}
           total={mockData.budget.total}
         />
-        <TransactionList transactions={mockData.transactions} />
+        <TransactionList
+          transactions={mockData.transactions}
+          onAddExpense={handleAddExpense}
+        />
       </div>
       <BottomNav
+        fabOpen={fabOpen}
+        setFabOpen={setFabOpen}
         onAddExpense={handleAddExpense}
         onAddIncome={handleAddIncome}
       />

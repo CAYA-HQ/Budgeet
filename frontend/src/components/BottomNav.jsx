@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Home, Lightbulb } from 'lucide-react'
 import FABMenu from './FABMenu'
 
-function BottomNav({ onAddExpense, onAddIncome }) {
+function BottomNav({ fabOpen, setFabOpen, onAddExpense, onAddIncome }) {
   const location = useLocation()
 
   return (
@@ -16,6 +16,8 @@ function BottomNav({ onAddExpense, onAddIncome }) {
       </Link>
 
       <FABMenu
+        isOpen={fabOpen}
+        onToggle={setFabOpen}
         onAddExpense={onAddExpense}
         onAddIncome={onAddIncome}
       />
