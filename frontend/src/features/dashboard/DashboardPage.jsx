@@ -5,6 +5,7 @@ import BudgetProgressBar from '../../components/BudgetProgressBar'
 import TransactionList from '../../components/TransactionList'
 import BottomNav from '../../components/BottomNav'
 import SideNav from '../../components/SideNav'
+import '../../styles/dashboard.css'
 
 const mockData = {
   user: {

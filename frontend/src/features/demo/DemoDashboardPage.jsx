@@ -4,6 +4,7 @@ import TotalSpendCard from '../../components/TotalSpendCard'
 import BudgetProgressBar from '../../components/BudgetProgressBar'
 import TransactionList from '../../components/TransactionList'
 import BottomNav from '../../components/BottomNav'
+import '../../styles/dashboard.css'
 
 const demoData = {
   totalSpend: 45200,
