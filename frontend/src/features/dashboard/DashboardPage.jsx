@@ -6,41 +6,37 @@ import BudgetProgressBar from '../../components/BudgetProgressBar'
 import TransactionList from '../../components/TransactionList'
 import BottomNav from '../../components/BottomNav'
 import SideNav from '../../components/SideNav'
+import AddExpense from '../../components/AddExpense'
 import '../../styles/dashboard.css'
 
 const allMockData = {
   user: { name: 'Ade' },
   budget: { spent: 0, total: null },
-  today: {
-    totalSpend: 0,
-    transactions: [],
-  },
-  thisWeek: {
-    totalSpend: 0,
-    transactions: [],
-  },
-  thisMonth: {
-    totalSpend: 0,
-    transactions: [],
-  },
+  today: { totalSpend: 0, transactions: [] },
+  thisWeek: { totalSpend: 0, transactions: [] },
+  thisMonth: { totalSpend: 0, transactions: [] },
 }
 
 function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState('today')
   const [fabOpen, setFabOpen] = useState(false)
+  const [showAddExpense, setShowAddExpense] = useState(false)
+  const [transactions, setTransactions] = useState([])
+  const [totalSpend, setTotalSpend] = useState(0)
 
-  const getFilteredData = () => {
-    switch (activeFilter) {
-      case 'thisWeek': return allMockData.thisWeek
-      case 'thisMonth': return allMockData.thisMonth
-      default: return allMockData.today
-    }
+  const handleAddExpense = () => {
+    setFabOpen(false)
+    setShowAddExpense(true)
   }
 
-  const filteredData = getFilteredData()
+  const handleAddIncome = () => {
+    setFabOpen(false)
+  }
 
-  const handleAddExpense = () => setFabOpen(true)
-  const handleAddIncome = () => setFabOpen(false)
+  const handleSaveExpense = (expense) => {
+    setTransactions([expense, ...transactions])
+    setTotalSpend(totalSpend + expense.amount)
+  }
 
   return (
     <div className="app-layout">
@@ -48,13 +44,13 @@ function DashboardPage() {
       <div className="main-content">
         <GreetingHeader name={allMockData.user.name} />
         <FilterTabs onFilterChange={setActiveFilter} />
-        <TotalSpendCard amount={filteredData.totalSpend} />
+        <TotalSpendCard amount={totalSpend} />
         <BudgetProgressBar
           spent={allMockData.budget.spent}
           total={allMockData.budget.total}
         />
         <TransactionList
-          transactions={filteredData.transactions}
+          transactions={transactions}
           onAddExpense={handleAddExpense}
         />
       </div>
@@ -64,6 +60,12 @@ function DashboardPage() {
         onAddExpense={handleAddExpense}
         onAddIncome={handleAddIncome}
       />
+      {showAddExpense && (
+        <AddExpense
+          onClose={() => setShowAddExpense(false)}
+          onSave={handleSaveExpense}
+        />
+      )}
     </div>
   )
 }
