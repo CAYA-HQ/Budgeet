@@ -7,6 +7,7 @@ import TransactionList from '../../components/TransactionList'
 import BottomNav from '../../components/BottomNav'
 import SideNav from '../../components/SideNav'
 import AddExpense from '../../components/AddExpense'
+import AddIncome from '../../components/AddIncome'
 import '../../styles/dashboard.css'
 
 const allMockData = {
@@ -21,6 +22,7 @@ function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState('today')
   const [fabOpen, setFabOpen] = useState(false)
   const [showAddExpense, setShowAddExpense] = useState(false)
+  const [showAddIncome, setShowAddIncome] = useState(false)
   const [transactions, setTransactions] = useState([])
   const [totalSpend, setTotalSpend] = useState(0)
 
@@ -29,13 +31,18 @@ function DashboardPage() {
     setShowAddExpense(true)
   }
 
-  const handleAddIncome = () => {
+  const handleAddIncome = () => {  
     setFabOpen(false)
+    setShowAddIncome(true)
   }
 
   const handleSaveExpense = (expense) => {
     setTransactions([expense, ...transactions])
     setTotalSpend(totalSpend + expense.amount)
+  }
+
+  const handleSaveIncome = (income) => { 
+    setTransactions([income, ...transactions])
   }
 
   return (
@@ -64,6 +71,12 @@ function DashboardPage() {
         <AddExpense
           onClose={() => setShowAddExpense(false)}
           onSave={handleSaveExpense}
+        />
+      )}
+      {showAddIncome && ( 
+        <AddIncome
+          onClose={() => setShowAddIncome(false)}
+          onSave={handleSaveIncome}
         />
       )}
     </div>

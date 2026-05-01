@@ -704,3 +704,32 @@
   color: #000000;
   flex-shrink: 0;
 }
+
+/* ================================
+   INCOME TYPE SELECTOR
+================================ */
+.income-type-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.income-type-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #e0e0e0;
+  background-color: #ffffff;
+  color: #78778B;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.income-type-btn.active {
+  border-color: #000000;
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 600;
+}
