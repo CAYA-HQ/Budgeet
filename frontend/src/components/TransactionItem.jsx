@@ -1,4 +1,4 @@
-import { Utensils, Car, ShoppingBag, Heart, Home, Tv, BookOpen, Package } from 'lucide-react'
+import { Utensils, Car, ShoppingBag, Heart, Home, Tv, BookOpen, Package, Zap, Users, Fuel, Smartphone, Plane, Coffee, Landmark, ArrowLeftRight } from 'lucide-react'
 
 const categoryIcons = {
   food: Utensils,
@@ -9,9 +9,17 @@ const categoryIcons = {
   entertainment: Tv,
   education: BookOpen,
   miscellaneous: Package,
+  bills: Zap,
+  family: Users,
+  fuel: Fuel,
+  phone: Smartphone,
+  travel: Plane,
+  socializing: Coffee,
+  withdrawal: Landmark,
+  transfer: ArrowLeftRight,
 }
 
-function TransactionItem({ icon, name, time, amount }) {
+function TransactionItem({ icon, name, time, amount, onTap, isNew }) {
   const formatAmount = (amount) => {
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
@@ -22,7 +30,11 @@ function TransactionItem({ icon, name, time, amount }) {
   const Icon = categoryIcons[icon] || Package
 
   return (
-    <div className="transaction-item">
+    <div
+      className={`transaction-item ${isNew ? 'animate-in' : ''}`}
+      onClick={onTap}
+      style={{ cursor: 'pointer' }}
+    >
       <div className="transaction-icon">
         <Icon size={20} />
       </div>

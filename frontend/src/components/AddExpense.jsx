@@ -2,11 +2,17 @@ import { useState } from 'react'
 import { X, ChevronRight } from 'lucide-react'
 import CategoryPicker, { categories } from './CategoryPicker'
 
-function AddExpense({ onClose, onSave }) {
-  const [amount, setAmount] = useState('')
-  const [description, setDescription] = useState('')
-  const [category, setCategory] = useState(categories[0])
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+function AddExpense({ onClose, onSave, existing }) {
+  const [amount, setAmount] = useState(existing ? String(existing.amount) : '')
+  const [description, setDescription] = useState(existing ? existing.description : '')
+  const [category, setCategory] = useState(
+    existing
+      ? categories.find((c) => c.id === existing.category) || categories[0]
+      : categories[0]
+  )
+  const [date, setDate] = useState(
+    existing ? existing.date : new Date().toISOString().split('T')[0]
+  )
   const [showCategoryPicker, setShowCategoryPicker] = useState(false)
 
   const handleSave = () => {
@@ -18,11 +24,13 @@ function AddExpense({ onClose, onSave }) {
       icon: category.id,
       name: description || category.label,
       date,
-      time: new Date().toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      }),
+      time: existing
+        ? existing.time
+        : new Date().toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+          }),
     }
     onSave(expense)
     onClose()
@@ -37,8 +45,12 @@ function AddExpense({ onClose, onSave }) {
             <button className="bottom-sheet-close" onClick={onClose}>
               <X size={20} />
             </button>
-            <h2>Add new expense</h2>
-            <p>Enter the details of your expense to help you track your spending.</p>
+            <h2>{existing ? 'Edit Expense' : 'Add new expense'}</h2>
+            <p>
+              {existing
+                ? 'Update the details of your expense.'
+                : 'Enter the details of your expense to help you track your spending.'}
+            </p>
           </div>
 
           <div className="bottom-sheet-body">
@@ -89,7 +101,7 @@ function AddExpense({ onClose, onSave }) {
             </div>
 
             <button className="add-expense-btn" onClick={handleSave}>
-              Add Expense
+              {existing ? 'Update Expense' : 'Add Expense'}
             </button>
           </div>
         </div>

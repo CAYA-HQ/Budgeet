@@ -1,4 +1,4 @@
-function BudgetProgressBar({ spent, total }) {
+function BudgetProgressBar({ spent, total, onTap }) {
   const percentage = total ? Math.round((spent / total) * 100) : 0
 
   const getColor = () => {
@@ -16,14 +16,14 @@ function BudgetProgressBar({ spent, total }) {
 
   if (!total) {
     return (
-      <div className="budget-progress-bar">
+      <div className="budget-progress-bar" onClick={onTap} style={{ cursor: 'pointer' }}>
         <p className="budget-not-set">Tap to set a budget</p>
       </div>
     )
   }
 
   return (
-    <div className="budget-progress-bar">
+    <div className="budget-progress-bar" onClick={onTap} style={{ cursor: 'pointer' }}>
       <p className="budget-label">Monthly Budget</p>
       <div className="budget-bar-track">
         <div
