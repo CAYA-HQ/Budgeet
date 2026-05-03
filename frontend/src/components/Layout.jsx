@@ -3,7 +3,7 @@ import Header from './ui/Header'
 
 function Layout({ children }) {
   return (
-    <div className="app">
+    <div className="app flex flex-col items-center">
       <Header />
       <main>
         {children}

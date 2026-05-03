@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from './header.module.css';
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,7 +21,7 @@ function Header() {
 
 
   return (
-    <header className="mx-auto sticky top-0.5 z-50 mt-4 w-[90%] md:w-[60%] bg-gray-200 max-w-[40rem] p-2 px-4 flex items-center justify-between border rounded-2xl">
+    <header className={`mx-auto sticky top-0.5 z-50 mt-4 w-[90%] md:w-[60%] bg-gray-200 max-w-[40rem] p-2 px-4 flex items-center justify-between border rounded-2xl ${styles.header}`}>
       <div className="flex items-center gap-2">
         <div className="logo w-[1.5rem] h-[1.5rem] bg-blue-700 text-white font-semibold grid place-content-center rounded">
           B
