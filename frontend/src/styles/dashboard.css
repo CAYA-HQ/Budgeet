@@ -1,0 +1,1084 @@
+/* ================================
+   RESET & BASE
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ================================
+   APP LAYOUT
+================================ */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px 16px;
+  padding-bottom: 100px;
+}
+
+/* ================================
+   GREETING HEADER
+================================ */
+.greeting-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.greeting-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.greeting-text h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.3;
+}
+
+.greeting-text p {
+  font-size: 12px;
+  color: #78778B;
+  margin-top: 2px;
+}
+
+/* ================================
+   FILTER TABS
+================================ */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.filter-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-tab {
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: none;
+  background-color: #f5f5f5;
+  color: #78778B;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.filter-tab.active {
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ================================
+   TOTAL SPEND CARD
+================================ */
+.total-spend-card {
+  background-color: #000000;
+  border-radius: 20px;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.total-spend-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+  /* text-transform: uppercase;
+  letter-spacing: 0.5px; */
+}
+
+.total-spend-amount {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+/* ================================
+   BUDGET PROGRESS BAR
+================================ */
+.budget-progress-bar {
+  background-color: #f5f5f5;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.budget-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.budget-bar-track {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.budget-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.budget-bar-fill.green { background-color: #22c55e; }
+.budget-bar-fill.yellow { background-color: #eab308; }
+.budget-bar-fill.red { background-color: #ef4444; }
+
+.budget-bar-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #78778B;
+}
+
+.budget-not-set {
+  font-size: 13px;
+  color: #000000;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* ================================
+   TRANSACTION LIST
+================================ */
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+}
+
+.transaction-item.animate-in {
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.transaction-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  flex-shrink: 0;
+}
+
+.transaction-details {
+  flex: 1;
+}
+
+.transaction-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.transaction-time {
+  font-size: 12px;
+  color: #78778B;
+  margin-top: 2px;
+}
+
+.transaction-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* ================================
+   EMPTY STATE
+================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.empty-state-subtitle {
+  font-size: 13px;
+  color: #78778B;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.empty-state-cta {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ================================
+   BOTTOM NAV
+================================ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px 32px 24px;
+  border-top: 1px solid #f0f0f0;
+  z-index: 100;
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #78778B;
+  font-size: 11px;
+}
+
+.bottom-nav-item.active {
+  color: #000000;
+}
+
+/* ================================
+   FAB MENU
+================================ */
+.fab-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fab-options {
+  position: absolute;
+  bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  animation: fabSlideUp 0.2s ease forwards;
+}
+
+@keyframes fabSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fab-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+  transition: transform 0.2s ease;
+}
+
+.fab-option:hover {
+  transform: scale(1.03);
+}
+
+.fab-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: -40px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background-color 0.2s ease;
+}
+
+.fab-button:hover {
+  transform: scale(1.05);
+}
+
+.fab-button:active {
+  transform: scale(0.95);
+}
+
+/* ================================
+   SIDE NAV - Hidden on mobile
+================================ */
+.side-nav {
+  display: none;
+}
+
+/* ================================
+   DESKTOP BREAKPOINT
+================================ */
+@media (min-width: 768px) {
+  .app-layout {
+    flex-direction: row;
+  }
+
+  .side-nav {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 24px 16px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  .side-nav-logo {
+    margin-bottom: 32px;
+  }
+
+  .side-nav-logo h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  .side-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .side-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #78778B;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .side-nav-item.active,
+  .side-nav-item:hover {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  .main-content {
+    margin-left: 240px;
+    padding: 32px;
+    padding-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .bottom-nav {
+    display: none;
+  }
+}
+/* ================================
+   BOTTOM SHEET
+================================ */
+.bottom-sheet-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.bottom-sheet {
+  background-color: #ffffff;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 16px 20px 40px;
+  animation: slideUp 0.3s ease forwards;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.bottom-sheet-handle {
+  width: 40px;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 99px;
+  margin: 0 auto 20px;
+}
+
+.bottom-sheet-header {
+  margin-bottom: 24px;
+}
+
+.bottom-sheet-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 12px;
+  color: #000000;
+}
+
+.bottom-sheet-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 6px;
+}
+
+.bottom-sheet-header p {
+  font-size: 13px;
+  color: #78778B;
+  line-height: 1.5;
+}
+
+.bottom-sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ================================
+   FORM ELEMENTS
+================================ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.2s ease;
+}
+
+.amount-input-wrapper:focus-within {
+  border-color: #000000;
+}
+
+.currency-symbol {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.amount-input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  width: 100%;
+  font-family: inherit;
+}
+
+.text-input {
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #000000;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.text-input:focus {
+  border-color: #000000;
+}
+
+.select-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #000000;
+  cursor: pointer;
+}
+
+.date-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.date-input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #000000;
+  font-family: inherit;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.add-expense-btn {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.add-expense-btn:active {
+  opacity: 0.8;
+}
+/* ================================
+   CATEGORY PICKER
+================================ */
+.category-sheet {
+  max-height: 80vh;
+}
+
+.category-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 6px;
+}
+
+.category-subtitle {
+  font-size: 13px;
+  color: #78778B;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #e0e0e0;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.category-item.active {
+  border-color: #000000;
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.category-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  flex-shrink: 0;
+}
+
+/* ================================
+   INCOME TYPE SELECTOR
+================================ */
+.income-type-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.income-type-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #e0e0e0;
+  background-color: #ffffff;
+  color: #78778B;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.income-type-btn.active {
+  border-color: #000000;
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ================================
+   TRANSACTION DETAIL
+================================ */
+.transaction-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.transaction-detail-amount {
+  font-size: 36px;
+  font-weight: 700;
+  color: #000000;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.transaction-detail-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  text-align: center;
+  margin-top: -16px;
+}
+
+.transaction-detail-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1.5px solid #f0f0f0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.transaction-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 13px;
+  color: #78778B;
+}
+
+.detail-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #000000;
+  text-align: right;
+  max-width: 60%;
+}
+
+.transaction-detail-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.detail-edit-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.detail-delete-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+/* ================================
+   CALENDAR VIEW
+================================ */
+.calendar-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.calendar-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.calendar-day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.calendar-day-names span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #78778B;
+  padding: 6px 0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  font-size: 13px;
+  color: #000000;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.calendar-day.blank {
+  cursor: default;
+}
+
+.calendar-day.today {
+  font-weight: 700;
+  color: #000000;
+}
+
+.calendar-day.selected {
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.calendar-dot {
+  position: absolute;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.calendar-day.selected .calendar-dot {
+  background-color: #ffffff;
+}
+
+.calendar-selected-date {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calendar-selected-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.calendar-selected-header span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.calendar-selected-total {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.calendar-empty {
+  font-size: 13px;
+  color: #78778B;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* ================================
+   GET STARTED BUTTON
+================================ */
+.get-started-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 24px;
+  transition: opacity 0.2s ease;
+}
+
+.get-started-btn:active {
+  opacity: 0.8;
+}
+/* ================================
+   DEMO MODAL
+================================ */
+.demo-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 300;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.demo-modal {
+  background-color: #ffffff;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: slideUp 0.4s ease forwards;
+}
+
+.demo-modal h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.3;
+}
+
+.demo-modal p {
+  font-size: 14px;
+  color: #78778B;
+  line-height: 1.6;
+}
+
+.demo-modal-cta {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.demo-modal-cta:active {
+  opacity: 0.8;
+}
+
+.demo-modal-secondary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1.5px solid #e0e0e0;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.demo-modal-secondary:active {
+  background-color: #f5f5f5;
+}

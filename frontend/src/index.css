@@ -49,6 +49,17 @@
 }
 
 :root {
+    /* Budgeet Brand Colors */
+  --budgeet-primary: #000AC2;
+  --budgeet-primary-light: #EFEFFF;
+  --budgeet-background: #FFFFFF;
+  --budgeet-text-primary: #000000;
+  --budgeet-text-secondary: #78778B;
+  --budgeet-text-white: #FFFFFF;
+  --budgeet-success: #22c55e;
+  --budgeet-warning: #eab308;
+  --budgeet-danger: #ef4444;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

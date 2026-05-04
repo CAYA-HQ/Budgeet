@@ -1,0 +1,10 @@
+.header{
+    top: 0.125rem;
+    padding: 1rem; 
+    margin: 2rem 0;
+}
+
+.header>div:last-child button:last-child{
+    padding: 5px 12px;
+    border-radius: 8px;
+}
