@@ -21,8 +21,8 @@ function InsightsPage() {
   const [fabOpen, setFabOpen] = useState(false)
 
   return (
-    <div className="app-layout">
-      <SideNav />
+    <div className="">
+      {/* <SideNav /> */}
       <div className="main-content">
         <div className="insights-header">
           <h1>Insights</h1>

@@ -31,14 +31,17 @@
    INSIGHT CARDS
 ================================ */
 .insight-cards {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 10px;
   margin-bottom: 36px;
+
 }
 
 .insight-card {
+  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: 14px;
   padding: 16px;

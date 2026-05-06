@@ -1,0 +1,8 @@
+.dashboardHeader{
+    padding-inline: 4.5rem;
+}
+@media (max-width: 768px) {
+    .dashboardHeader{
+    padding-inline: 1rem;
+    }
+}

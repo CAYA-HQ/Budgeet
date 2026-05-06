@@ -51,6 +51,7 @@
 :root {
     /* Budgeet Brand Colors */
   --budgeet-primary: #000AC2;
+  --budgeet-primary-hover: #EEF1FC;
   --budgeet-primary-light: #EFEFFF;
   --budgeet-background: #FFFFFF;
   --budgeet-text-primary: #000000;
