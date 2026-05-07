@@ -16,7 +16,7 @@ function LandingPage() {
             financial decisions - all in one place.
           </p>
         </div>
-        <button className="bg-black text-white text-xl font-semibold p-2 px-4 rounded-2xl">
+        <button className="bg-[var(--budgeet-primary)] text-white text-xl font-semibold p-2 px-4 rounded-2xl">
           Join for Free
         </button>
       </section>

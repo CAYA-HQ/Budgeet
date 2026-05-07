@@ -14,9 +14,9 @@ import TransactionDetail from '../../components/TransactionDetail'
 import CalendarView from '../../components/CalendarView'
 import '../../styles/dashboard.css'
 
-const allMockData = {
-  user: { name: 'Ade' },
-}
+// const allMockData = {
+//   user: { name: 'Ade' },
+// }
 
 const filterByDate = (transactions, filter) => {
   const now = new Date()
@@ -113,9 +113,9 @@ function DashboardPage() {
           },
         }}
       />
-      <SideNav />
+      {/* <SideNav /> */}
       <div className="main-content">
-  <GreetingHeader name={allMockData.user.name} />
+  {/* <GreetingHeader name={allMockData.user.name} /> */}
   <FilterTabs onFilterChange={setActiveFilter} />
   <TotalSpendCard amount={totalSpend} />
   <BudgetProgressBar

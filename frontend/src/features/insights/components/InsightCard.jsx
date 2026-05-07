@@ -72,7 +72,7 @@ function InsightCard({ transactions, budget }) {
       {insights.map((insight, index) => {
         const Icon = insight.icon
         return (
-          <div key={index} className="insight-card">
+          <div key={index} className="insight-card flex">
             <div
               className="insight-card-icon"
               style={{

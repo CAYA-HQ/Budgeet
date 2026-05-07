@@ -7,7 +7,7 @@ function GreetingHeader({ name }) {
   }
 
   return (
-    <div className="greeting-header">
+    <div className="greeting-header h-full flex items-center">
       <div className="greeting-avatar">
         {name ? name.charAt(0).toUpperCase() : "E"}
       </div>
