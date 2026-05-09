@@ -14,19 +14,16 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes using standard Layout */}
         <Route path="demo" element={<DemoDashboardPage />} />
+        
         <Route path="/" element={<Layout />}>
           <Route index element={<LandingPage />} />
-          {/* <Route path="demo" element={<DemoDashboardPage />} /> */}
-          <Route path="auth" element={<AuthPage />} />
-          <Route path="auth/google/callback" element={<GoogleAuthCallback />} />
         </Route>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="auth/google/callback" element={<GoogleAuthCallback />} />
 
-        {/* Dashboard Routes using DashboardLayout */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
-          
           <Route path="expenses" element={<ExpensesPage />} />
           <Route path="budget" element={<BudgetPage />} />
           <Route path="insights" element={<InsightsPage />} />
