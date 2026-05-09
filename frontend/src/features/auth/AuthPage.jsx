@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useCallback, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { startGoogleAuth } from "./googleAuth";
 import "./AuthPage.css";
-import handImage from "./assets/hand.png";
+import handImage from "/hand.png";
 
 const COIN_SVG = (
   <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,7 @@ const EyeIcon = ({ open }) => (
   </svg>
 );
 
-function SignUp({ onSwitch }) {
+export function SignUp({ onSwitch }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
@@ -301,7 +301,15 @@ function SignIn({ onSwitch }) {
 }
 
 export default function BudgeetAuth() {
-  const [page, setPage] = useState("signup");
+  const location = useLocation();
+  // const [page, setPage] = useState("signup");
+  const [page, setPage] = useState(location.state?.screen || "signup");
+
+  useEffect(() => {
+    if (location.state?.screen) {
+      setPage(location.state.screen);
+    }
+  }, [location.state]);
 
   return (
     <>

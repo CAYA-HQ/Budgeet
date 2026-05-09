@@ -5,7 +5,7 @@ import styles from "./dashboard-header.module.css";
 
 function DashboardHeader() {
   const allMockData = {
-    user: { name: "Melanin" },
+    user: { name: "Elizabeth" },
   };
   return (
     <div className={`dashboard-header h-16 shrink-0 bg-white border-b border-gray-100 px-6 flex items-center justify-between sticky top-0 z-50 ${styles.dashboardHeader}`}>

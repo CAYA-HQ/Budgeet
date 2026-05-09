@@ -2,6 +2,8 @@
     top: 0.125rem;
     padding: .5rem; 
     margin: 2rem 0;
+    box-shadow: 2px 2px #0000000a,
+    -2px 2px #0000000a;
 }
 
 .header>div:last-child button:last-child{
