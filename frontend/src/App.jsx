@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import LandingPage from "./features/landing/LandingPage";
 import DemoDashboardPage from "./features/demo/DemoDashboardPage";
 import AuthPage from "./features/auth/AuthPage";
+import GoogleAuthCallback from "./features/auth/GoogleAuthCallback";
 import DashboardPage from "./features/dashboard/DashboardPage";
 import ExpensesPage from "./features/expenses/ExpensesPage";
 import BudgetPage from "./features/budget/BudgetPage";
@@ -18,6 +19,7 @@ function App() {
           <Route index element={<LandingPage />} />
           <Route path="demo" element={<DemoDashboardPage />} />
           <Route path="auth" element={<AuthPage />} />
+          <Route path="auth/google/callback" element={<GoogleAuthCallback />} />
         </Route>
 
         {/* Dashboard Routes using DashboardLayout */}
