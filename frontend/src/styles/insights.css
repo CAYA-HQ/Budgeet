@@ -202,7 +202,7 @@
 
 .category-breakdown-bar-fill {
   height: 100%;
-  background-color: #000000;
+  background-color: var(--budgeet-primary);
   border-radius: 99px;
   transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -266,11 +266,12 @@
 }
 
 .chart-bar-fill.highest {
-  background-color: #000000;
+  background-color: var(--budgeet-primary);
 }
 
 .chart-bar-fill.today {
-  background-color: #000000;
+  background-color: var(--budgeet-primary);
+  color: var(--budgeet-primary-light);
 }
 
 .chart-bar-label {

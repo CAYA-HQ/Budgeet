@@ -14,15 +14,17 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Public Routes using standard Layout */}
+        <Route path="demo" element={<DemoDashboardPage />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<LandingPage />} />
-          <Route path="demo" element={<DemoDashboardPage />} />
+          {/* <Route path="demo" element={<DemoDashboardPage />} /> */}
           <Route path="auth" element={<AuthPage />} />
         </Route>
 
         {/* Dashboard Routes using DashboardLayout */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
+          
           <Route path="expenses" element={<ExpensesPage />} />
           <Route path="budget" element={<BudgetPage />} />
           <Route path="insights" element={<InsightsPage />} />

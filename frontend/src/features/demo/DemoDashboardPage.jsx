@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast, Toaster } from 'react-hot-toast'
 import GreetingHeader from '../../components/GreetingHeader'
+import DashboardHeader from '@/components/ui/DashboardHeader'
 import FilterTabs from '../../components/FilterTabs'
 import TotalSpendCard from '../../components/TotalSpendCard'
 import BudgetProgressBar from '../../components/BudgetProgressBar'
@@ -85,7 +86,8 @@ function DemoDashboardPage() {
       />
       <SideNav />
       <div className="main-content">
-        <GreetingHeader />
+        {/* <GreetingHeader /> */}
+        <DashboardHeader />
         <FilterTabs onFilterChange={() => {}} />
         <TotalSpendCard amount={totalSpend} />
         <BudgetProgressBar
