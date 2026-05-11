@@ -20,16 +20,17 @@ function GreetingHeader({ name }) {
 
   return (
     <div
-      className={`greeting-header h-full flex items-center${styles.greetingsHeader}`}
+      className={`greeting-header h-full${styles.greetingsHeader}`}
     >
+      <button className="greeting-dropdown  flex items-center gap-2 cursor-pointer" onClick={handleDroDown}>
       <div className="greeting-avatar">
         {name ? name.charAt(0).toUpperCase() : "E"}
       </div>
-      <button className="greeting-dropdown" onClick={handleDroDown}>
+      
         {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
       </button>
       {isOpen && (
-        <ul className="greeting-dropdown-content absolute top-[4rem] right-19 shadow-2xl z-50">
+        <ul className="greeting-dropdown-content absolute top-[4rem] right-0 md:right-19 shadow-2xl z-50">
           <div className="h-20 flex items-center justify-center gap-2 border-b">
             <div className="greeting-avatar">
               {name ? name.charAt(0).toUpperCase() : "E"}

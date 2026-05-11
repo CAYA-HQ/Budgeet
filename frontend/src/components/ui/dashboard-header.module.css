@@ -2,8 +2,9 @@
     width: 100%;
     padding-inline: 4.5rem;
 }
-.dashboardHeader > form > input{
-    padding-inline: .5rem;
+.dashboardHeader > form input{
+    padding-left: 1rem;
+    /* padding-left: 4rem; */
 }
 @media (max-width: 768px) {
     .dashboardHeader{
