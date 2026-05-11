@@ -61,7 +61,22 @@
   color: #78778B;
   margin-top: 2px;
 }
+.greeting-header> ul{
+  background-color: white;
+  padding:1rem 2rem;
 
+}
+.greeting-header> ul li{
+  font-weight: bold;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+}
+.greeting-header> ul li:last-child{
+  color: red;
+}
 /* ================================
    FILTER TABS
 ================================ */

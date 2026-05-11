@@ -8,14 +8,27 @@ function DashboardHeader() {
     user: { name: "Elizabeth" },
   };
   return (
-    <div className={`dashboard-header h-16 shrink-0 bg-white border-b border-gray-100 px-6 flex items-center justify-between sticky top-0 z-50 ${styles.dashboardHeader}`}>
-      <div className="left h-full flex items-center">
+    <div className={`dashboard-header h-16 shrink-0 bg-white border-b border-gray-100 px-6 flex items-center justify-end md:justify-between sticky top-0 z-50 ${styles.dashboardHeader}`}>
+     
+        <form action="" className="right w-full max-w-[90%] bg-white md:w-80 flex gap-1 items-center absolute md:static top-[4rem]">
+        <input 
+        type="search" 
+        className="w-full h-10 border rounded-l-sm" 
+        placeholder="Search" 
+        
+        
+        />
+        <button type="submit" className="md:w-20 h-10 flex justify-center items-center rounded-r-sm md:border">
+          <Search size={20} />
+        </button>
+        
+        </form>
+
+      <div className="left h-full flex items-center gap-4">
+        <Bell size={20} />
         <GreetingHeader name={allMockData.user.name} />
       </div>
-      <div className="right flex gap-5 items-center">
-        <Search size={20} />
-        <Bell size={20} />
-      </div>
+      
     </div>
   );
 }
