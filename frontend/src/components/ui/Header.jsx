@@ -1,9 +1,10 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import styles from './header.module.css';
 
 function Header() {
-  const isLoggedIn = false;
+  const { user, logout } = useAuth();
+  const isLoggedIn = !!user;
   const navigate = useNavigate();
 
    const handleGuestClick = () => {
@@ -13,7 +14,8 @@ function Header() {
 
   const handleLoginClick = () => {
     if (isLoggedIn) {
-      navigate("/dashboard");
+        logout();
+      navigate("/");
     } else {
       navigate("/auth", { state: { screen: "signin" } });
     }

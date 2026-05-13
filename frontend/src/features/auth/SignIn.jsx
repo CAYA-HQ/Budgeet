@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { startGoogleAuth } from "./googleAuth";
 import "./AuthPage.css";
+import { useAuth } from "../../context/AuthContext";
+
 
 
 const EyeIcon = ({ open }) => (
@@ -29,7 +31,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-function SignIn({ onSwitch }) {
+function SignIn() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
@@ -38,6 +40,9 @@ function SignIn({ onSwitch }) {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const { login } = useAuth();
+
 
   const validate = () => {
     const e = {};
@@ -80,8 +85,10 @@ function SignIn({ onSwitch }) {
         setApiError(data?.message || "Invalid email or password. Please try again.");
         return;
       }
-
+      login(data.user);
+      // setSuccess(true);
       navigate("/dashboard");
+      
     } catch {
       setApiError("Invalid email or password. Please try again.");
     } finally { setLoading(false); }

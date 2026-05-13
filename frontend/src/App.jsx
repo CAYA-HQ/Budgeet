@@ -12,9 +12,11 @@ import DashboardLayout from "./components/layout/DashboardLayout";
 import AuthLayout from "./components/layout/AuthLayout";
 import SignIn from "./features/auth/SignIn";
 import SignUp from "./features/auth/SignUp";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
         <Route path="demo" element={<DemoDashboardPage />} />
@@ -37,6 +39,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
