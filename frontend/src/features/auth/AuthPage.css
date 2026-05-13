@@ -250,6 +250,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--white); }
 .success-msg { font-size: 14px; color: var(--sub); }
 
 .auth-right {
+  min-height: 100%;
   flex: 1;
   background: var(--panel-bg);
   position: relative;
@@ -257,6 +258,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--white); }
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+
 }
 
 .panel-hand {

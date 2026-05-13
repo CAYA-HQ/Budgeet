@@ -9,17 +9,24 @@ import ExpensesPage from "./features/expenses/ExpensesPage";
 import BudgetPage from "./features/budget/BudgetPage";
 import InsightsPage from "./features/insights/InsightsPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
+import AuthLayout from "./components/layout/AuthLayout";
+import SignIn from "./features/auth/SignIn";
+import SignUp from "./features/auth/SignUp";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="demo" element={<DemoDashboardPage />} />
-        
+
         <Route path="/" element={<Layout />}>
           <Route index element={<LandingPage />} />
         </Route>
-        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/auth" element={<AuthLayout />}>
+        <Route index element={<SignIn />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
+        </Route>
         <Route path="auth/google/callback" element={<GoogleAuthCallback />} />
 
         <Route path="/dashboard" element={<DashboardLayout />}>

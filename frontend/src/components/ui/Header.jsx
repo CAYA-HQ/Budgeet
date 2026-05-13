@@ -32,7 +32,7 @@ function Header() {
       </div>
       <div className="cta-bx flex gap-2">
         <button className="cta text-sm md:text-base font-normal md:font-semibold cursor-pointer" onClick={handleGuestClick}>
-          Guest
+          Demo
         </button>
         <button className={`cta ${isLoggedIn?  "bg-red-600" : "bg-[var(--budgeet-primary)]"} text-white text-sm md:text-base font-normal md:font-semibold px-2 rounded cursor-pointer`} onClick={handleLoginClick}>
           {isLoggedIn ? "Log out" : "Login"}
