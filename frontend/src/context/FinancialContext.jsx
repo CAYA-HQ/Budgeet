@@ -1,4 +1,4 @@
-// context/FinanceContext.jsx
+
 import { createContext, useContext, useState } from "react";
 
 const FinanceContext = createContext(null);

@@ -2,8 +2,14 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp, User, Settings, LogOut} from "lucide-react";
 import styles from "./greetings-header.module.css";
 
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+
+
 function GreetingHeader({ name }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
+
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -16,7 +22,6 @@ function GreetingHeader({ name }) {
     setIsOpen(!isOpen);
   };
 
-  console.log(isOpen);
 
   return (
     <div
@@ -42,9 +47,9 @@ function GreetingHeader({ name }) {
               <p>Track your expenses, start your day right</p>
             </div>
           </div>
-          <li><User /> My Profile</li>
-          <li><Settings />Settings</li>
-          <li><LogOut />Logout</li>
+          <li><Link to=""><User /> My Profile</Link></li>
+          <li><Link to=""><Settings />Settings</Link></li>
+          <li onClick={logout}><Link to=""><LogOut />Logout</Link></li>
         </ul>
       )}
       {/* <div className="greeting-text">
