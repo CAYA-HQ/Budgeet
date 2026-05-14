@@ -262,31 +262,30 @@ body { font-family: 'DM Sans', sans-serif; background: var(--white); }
 }
 
 .panel-hand {
-  position: relative;
+  height: 100%;
   width: 46vw;
   max-width: 660px;
-  margin-right: 0;
-  margin-bottom: -10px;
+  transform: scaleX(-1);
   display: flex;
   justify-content: flex-end;
 }
 
-.panel-hand img {
+/* .panel-hand img {
   width: 100%;
   height: auto;
   display: block;
   object-fit: contain;
   animation: floatImage 3s ease-in-out infinite;
-}
+} */
 
-.panel-coin {
+/* .panel-coin {
   position: absolute;
   top: 14%;
   right: 12%;
   animation: coinFloat 3.5s ease-in-out infinite;
   filter: drop-shadow(0 8px 24px rgba(0,0,0,0.22));
   user-select: none;
-}
+} */
 
 @keyframes coinFloat {
   0%, 100% { transform: translateY(0px) rotate(-3deg); }

@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { startGoogleAuth } from "./googleAuth";
 import "./AuthPage.css";
 import { useAuth } from "../../context/AuthContext";
@@ -86,7 +86,7 @@ function SignIn() {
         return;
       }
       login(data.user);
-      // setSuccess(true);
+      setSuccess(true);
       navigate("/dashboard");
       
     } catch {

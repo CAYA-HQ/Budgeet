@@ -1,5 +1,6 @@
-import { useState, useCallback, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { startGoogleAuth } from "./googleAuth";
 import { useAuth } from "../../context/AuthContext";
 
 const EyeIcon = ({ open }) => (
@@ -140,7 +141,7 @@ export function SignUp() {
           style={{ marginTop: 8, width: "auto", padding: "12px 32px" }}
           onClick={() => {
             setSuccess(false);
-            onSwitch();
+            // onSwitch();
           }}
         >
           Sign in now
