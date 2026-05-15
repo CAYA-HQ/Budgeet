@@ -1,4 +1,9 @@
 import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { startGoogleAuth } from "./googleAuth";
+import { useAuth } from "../../context/AuthContext";
+import "./AuthPage.css";
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { startGoogleAuth } from "./googleAuth";
 import "./AuthPage.css";
@@ -65,6 +70,13 @@ function SignIn({ onSwitch }) {
   const handleSubmit = async () => {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
+    setLoading(true);
+    setApiError("");
+    try {
+      const res = await fetch("http://localhost:8000/api/auth/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
     setLoading(true); setApiError("");
     try {
       const res = await fetch("http://localhost:8000/api/auth/login/", {
@@ -81,6 +93,14 @@ function SignIn({ onSwitch }) {
         return;
       }
 
+      storeSession(data);
+      setSuccess(true);
+      navigate("/dashboard");
+    } catch {
+      setApiError("Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
       navigate("/dashboard");
     } catch {
       setApiError("Invalid email or password. Please try again.");
@@ -105,6 +125,14 @@ function SignIn({ onSwitch }) {
       <div className="form-group">
         <label className="form-label">Email</label>
         <div className="input-wrap">
+          <input
+            className={`form-input${errors.email ? " error-field" : ""}`}
+            type="email"
+            placeholder="Enter your email"
+            value={form.email}
+            onChange={handleChange("email")}
+            autoComplete="email"
+          />
           <input className={`form-input${errors.email ? " error-field" : ""}`}
             type="email" placeholder="Enter your email"
             value={form.email} onChange={handleChange("email")} autoComplete="email" />
@@ -115,6 +143,14 @@ function SignIn({ onSwitch }) {
       <div className="form-group">
         <label className="form-label">Password</label>
         <div className="input-wrap">
+          <input
+            className={`form-input has-toggle${errors.password ? " error-field" : ""}`}
+            type={showPw ? "text" : "password"}
+            placeholder="••••••••"
+            value={form.password}
+            onChange={handleChange("password")}
+            autoComplete="current-password"
+          />
           <input className={`form-input has-toggle${errors.password ? " error-field" : ""}`}
             type={showPw ? "text" : "password"} placeholder="••••••••"
             value={form.password} onChange={handleChange("password")} autoComplete="current-password" />
@@ -134,16 +170,20 @@ function SignIn({ onSwitch }) {
       </div>
 
       <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
+        {loading ? <><span className="spinner" />Signing in…</> : "Sign in"}
         {loading ? <><span className="spinner"/>Signing in…</> : "Sign in"}
       </button>
       <button className="btn-google" type="button" onClick={handleGoogleButton}>
         <GoogleIcon /> Sign in with google
       </button>
       <div className="auth-footer">
+        Don&apos;t have an account?{" "}
+        <a onClick={() => navigate("/auth/signup")}>Sign up for free</a>
         Don't have an account? <a onClick={() => navigate("/auth/signup")}>Sign up for free</a>
       </div>
     </div>
   );
 }
 
+export default SignIn;
 export default SignIn

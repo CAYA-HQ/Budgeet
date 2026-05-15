@@ -56,3 +56,4 @@ function GreetingHeader({ name }) {
 }
 
 export default GreetingHeader;
+export default GreetingHeader;
