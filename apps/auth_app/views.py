@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
+from core.emails import send_welcome_email
 
 User = get_user_model()
 
@@ -35,6 +36,7 @@ def register(request):
         return Response({"message": str(first_error)}, status=status.HTTP_400_BAD_REQUEST)
 
     user = serializer.save()
+    send_welcome_email(user)
     return Response(
         {
             "user": UserSerializer(user).data,
@@ -97,7 +99,13 @@ def google_auth(request):
     code_verifier = request.data.get("code_verifier")
     redirect_uri = request.data.get("redirect_uri")
 
+    print(f"\n[Google OAuth] Incoming data:")
+    print(f"  code         = {'YES len=' + str(len(code)) if code else 'MISSING'}")
+    print(f"  code_verifier= {'YES len=' + str(len(code_verifier)) if code_verifier else 'MISSING'}")
+    print(f"  redirect_uri = {redirect_uri or 'MISSING'}")
+
     if not all([code, code_verifier, redirect_uri]):
+        print(f"[Google OAuth] FAIL: missing required fields")
         return Response(
             {"message": "code, code_verifier and redirect_uri are required."},
             status=status.HTTP_400_BAD_REQUEST,
@@ -113,6 +121,9 @@ def google_auth(request):
         )
 
     # Exchange code for tokens
+    print(f"\n[Google OAuth] Exchanging code...")
+    print(f"[Google OAuth] redirect_uri = {redirect_uri}")
+
     token_resp = http_requests.post(
         "https://oauth2.googleapis.com/token",
         data={
@@ -125,6 +136,9 @@ def google_auth(request):
         },
         timeout=10,
     )
+
+    print(f"[Google OAuth] Token exchange status: {token_resp.status_code}")
+    print(f"[Google OAuth] Token exchange response: {token_resp.json()}")
 
     if token_resp.status_code != 200:
         return Response(
@@ -141,6 +155,9 @@ def google_auth(request):
         params={"id_token": id_token},
         timeout=10,
     )
+
+    print(f"[Google OAuth] Token info status: {info_resp.status_code}")
+    print(f"[Google OAuth] Token info response: {info_resp.json()}")
 
     if info_resp.status_code != 200:
         return Response(
@@ -163,8 +180,11 @@ def google_auth(request):
         email=email,
         defaults={"name": name, "avatar": avatar},
     )
-    if not created and avatar:
-        # Keep avatar fresh
+    if created:
+        # New user — send welcome email
+        send_welcome_email(user)
+    elif avatar:
+        # Returning user — keep avatar fresh
         User.objects.filter(pk=user.pk).update(avatar=avatar)
         user.avatar = avatar
 
