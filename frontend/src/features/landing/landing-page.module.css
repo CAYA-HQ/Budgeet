@@ -1,5 +1,6 @@
-.landingPage {}
-
+.landingPage {
+    background-color: var(--budgeet-primary-light);
+}
 .landingPage>div:first-child {
     height: 120px;
     position: relative;
@@ -40,28 +41,24 @@
 }
 @keyframes cycle {
 
-    /* FRONT */
     0% {
         transform: translateY(0) scale(1);
         z-index: 3;
         opacity: 6;
     }
 
-    /* MOVE TO MIDDLE */
     33% {
         transform: translateY(0) scale(0.95);
         z-index: 2;
         opacity: 0.5;
     }
 
-    /* MOVE TO BACK */
     66% {
         transform: translateY(0px) scale(0.9);
         z-index: 1;
         opacity: 0.5;
     }
 
-    /* BACK TO FRONT */
     100% {
         transform: translateY(0) scale(1);
         z-index: 3;

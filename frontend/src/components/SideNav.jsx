@@ -33,10 +33,10 @@ function SideNav() {
           })}
         </nav>
       </div>
-      <div className="bottom flex flex-col items-start justify-center">
+      {/* <div className="bottom flex flex-col items-start justify-center">
         <Link className={`side-nav-item ${location.pathname === "settings" ? "active" : ""}`}><Settings size={20} />Settings</Link>
         <button className={`side-nav-item cursor-pointer ${location.pathname === "logout" ? "active" : ""}`}><LogOut size={20} /> Logout</button>
-      </div>
+      </div> */}
     </div>
   );
 }

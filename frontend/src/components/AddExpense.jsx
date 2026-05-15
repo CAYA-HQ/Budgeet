@@ -100,7 +100,7 @@ function AddExpense({ onClose, onSave, existing }) {
               />
             </div>
 
-            <button className="add-expense-btn" onClick={handleSave}>
+            <button className="add-expense-btn " onClick={handleSave}>
               {existing ? 'Update Expense' : 'Add Expense'}
             </button>
           </div>

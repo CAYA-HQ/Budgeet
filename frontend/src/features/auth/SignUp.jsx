@@ -1,8 +1,5 @@
-import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { startGoogleAuth } from "./googleAuth";
-import { useAuth } from "../../context/AuthContext";
-import "./AuthPage.css";
+import { useState, useCallback, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const EyeIcon = ({ open }) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -31,8 +28,6 @@ const GoogleIcon = () => (
 
 export function SignUp({ onSwitch }) {
   const navigate = useNavigate();
-  const { storeSession } = useAuth();
-
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPw, setShowPw] = useState(false);
@@ -68,17 +63,18 @@ export function SignUp({ onSwitch }) {
   const handleSubmit = async () => {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
-    setLoading(true);
-    setApiError("");
+    setLoading(true); setApiError("");
     try {
       const res = await fetch("http://localhost:8000/api/auth/register/", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          password: form.password,
-        }),
+          password: form.password
+        })
       });
 
       const data = await res.json();
@@ -87,28 +83,18 @@ export function SignUp({ onSwitch }) {
         return;
       }
 
-      storeSession(data);
-      setSuccess(true);
       navigate("/dashboard");
     } catch {
       setApiError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   if (success) return (
     <div className="success-screen form-enter">
       <div className="success-icon">✓</div>
       <div className="success-title">Account created!</div>
-      <div className="success-msg">Welcome to Budgeet, {form.name.split(" ")[0]}. You&apos;re all set.</div>
-      <button
-        className="btn-primary"
-        style={{ marginTop: 8, width: "auto", padding: "12px 32px" }}
-        onClick={() => { setSuccess(false); onSwitch?.(); }}
-      >
-        Sign in now
-      </button>
+      <div className="success-msg">Welcome to Budgeet, {form.name.split(" ")[0]}. You're all set.</div>
+      <button className="btn-primary" style={{marginTop:8,width:'auto',padding:'12px 32px'}} onClick={() => { setSuccess(false); onSwitch(); }}>Sign in now</button>
     </div>
   );
 
@@ -122,14 +108,9 @@ export function SignUp({ onSwitch }) {
       <div className="form-group">
         <label className="form-label">Full Name</label>
         <div className="input-wrap">
-          <input
-            className={`form-input${errors.name ? " error-field" : ""}`}
-            type="text"
-            placeholder="Adaeze Okafor"
-            value={form.name}
-            onChange={handleChange("name")}
-            autoComplete="name"
-          />
+          <input className={`form-input${errors.name ? " error-field" : ""}`}
+            type="text" placeholder="Adaeze Okafor"
+            value={form.name} onChange={handleChange("name")} autoComplete="name" />
         </div>
         {errors.name && <div className="field-error">{errors.name}</div>}
       </div>
@@ -137,14 +118,9 @@ export function SignUp({ onSwitch }) {
       <div className="form-group">
         <label className="form-label">Email</label>
         <div className="input-wrap">
-          <input
-            className={`form-input${errors.email ? " error-field" : ""}`}
-            type="email"
-            placeholder="adaezeokafor100@gmail.com"
-            value={form.email}
-            onChange={handleChange("email")}
-            autoComplete="email"
-          />
+          <input className={`form-input${errors.email ? " error-field" : ""}`}
+            type="email" placeholder="adaezeokafor100@gmail.com"
+            value={form.email} onChange={handleChange("email")} autoComplete="email" />
         </div>
         {errors.email && <div className="field-error">{errors.email}</div>}
       </div>
@@ -152,14 +128,9 @@ export function SignUp({ onSwitch }) {
       <div className="form-group">
         <label className="form-label">Password</label>
         <div className="input-wrap">
-          <input
-            className={`form-input has-toggle${errors.password ? " error-field" : ""}`}
-            type={showPw ? "text" : "password"}
-            placeholder="••••••••"
-            value={form.password}
-            onChange={handleChange("password")}
-            autoComplete="new-password"
-          />
+          <input className={`form-input has-toggle${errors.password ? " error-field" : ""}`}
+            type={showPw ? "text" : "password"} placeholder="••••••••"
+            value={form.password} onChange={handleChange("password")} autoComplete="new-password" />
           <button className="pw-toggle" onClick={() => setShowPw(v => !v)} type="button" tabIndex={-1}>
             <EyeIcon open={showPw} />
           </button>
@@ -167,15 +138,14 @@ export function SignUp({ onSwitch }) {
         {errors.password && <div className="field-error">{errors.password}</div>}
       </div>
 
-      <button className="btn-primary" onClick={handleSubmit} disabled={loading} style={{ marginTop: 6 }}>
-        {loading ? <><span className="spinner" />Creating account…</> : "Create Account"}
+      <button className="btn-primary" onClick={handleSubmit} disabled={loading} style={{marginTop:6}}>
+        {loading ? <><span className="spinner"/>Creating account…</> : "Create Account"}
       </button>
       <button className="btn-google" type="button" onClick={handleGoogleButton}>
         <GoogleIcon /> Sign up with google
       </button>
       <div className="auth-footer">
-        Already have an account?{" "}
-        <a onClick={() => navigate("/auth/signin")}>Sign in</a>
+        Already have an account? <a onClick={() => navigate("/auth/signin")}>Sign in</a>
       </div>
     </div>
   );
