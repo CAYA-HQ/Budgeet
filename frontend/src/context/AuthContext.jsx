@@ -1,24 +1,37 @@
-// context/AuthContext.jsx
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import {
+  getToken,
+  setToken,
+  removeToken,
+  getStoredUser,
+  setStoredUser,
+  removeStoredUser,
+} from "../lib/api";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => getStoredUser());
 
-  const login = (userData) => {
+  /** Called after a successful register or login API response. */
+  const storeSession = ({ user: userData, token }) => {
+    setToken(token);
+    setStoredUser(userData);
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
+    removeToken();
+    removeStoredUser();
     setUser(null);
-    localStorage.removeItem("user");
-    console.log("Logged out");
   };
 
+  const isAuthenticated = Boolean(user && getToken());
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, storeSession, logout, isAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -29,3 +42,4 @@ export function useAuth() {
   if (!context) throw new Error("useAuth must be used inside AuthProvider");
   return context;
 }
+

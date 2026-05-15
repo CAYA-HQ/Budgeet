@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { startGoogleAuth } from "./googleAuth";
-import "./AuthPage.css";
 import { useAuth } from "../../context/AuthContext";
+import "./AuthPage.css";
+
+import { useNavigate, useLocation } from "react-router-dom";
+import "./AuthPage.css";
 
 
 
@@ -70,7 +72,9 @@ function SignIn() {
   const handleSubmit = async () => {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
-    setLoading(true); setApiError("");
+    setLoading(true);
+    setApiError("");
+
     try {
       const res = await fetch("http://localhost:8000/api/auth/login/", {
         method: "POST",
@@ -85,13 +89,16 @@ function SignIn() {
         setApiError(data?.message || "Invalid email or password. Please try again.");
         return;
       }
-      login(data.user);
+
+      storeSession(data);
       setSuccess(true);
       navigate("/dashboard");
-      
     } catch {
       setApiError("Invalid email or password. Please try again.");
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
+      
   };
 
   if (success) return (
@@ -112,9 +119,14 @@ function SignIn() {
       <div className="form-group">
         <label className="form-label">Email</label>
         <div className="input-wrap">
-          <input className={`form-input${errors.email ? " error-field" : ""}`}
-            type="email" placeholder="Enter your email"
-            value={form.email} onChange={handleChange("email")} autoComplete="email" />
+          <input
+            className={`form-input${errors.email ? " error-field" : ""}`}
+            type="email"
+            placeholder="Enter your email"
+            value={form.email}
+            onChange={handleChange("email")}
+            autoComplete="email"
+          />
         </div>
         {errors.email && <div className="field-error">{errors.email}</div>}
       </div>
@@ -122,9 +134,15 @@ function SignIn() {
       <div className="form-group">
         <label className="form-label">Password</label>
         <div className="input-wrap">
-          <input className={`form-input has-toggle${errors.password ? " error-field" : ""}`}
-            type={showPw ? "text" : "password"} placeholder="••••••••"
-            value={form.password} onChange={handleChange("password")} autoComplete="current-password" />
+          <input
+            className={`form-input has-toggle${errors.password ? " error-field" : ""}`}
+            type={showPw ? "text" : "password"}
+            placeholder="••••••••"
+            value={form.password}
+            onChange={handleChange("password")}
+            autoComplete="current-password"
+          />
+
           <button className="pw-toggle" onClick={() => setShowPw(v => !v)} type="button" tabIndex={-1}>
             <EyeIcon open={showPw} />
           </button>
@@ -141,16 +159,17 @@ function SignIn() {
       </div>
 
       <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
-        {loading ? <><span className="spinner"/>Signing in…</> : "Sign in"}
+        {loading ? <><span className="spinner" />Signing in…</> : "Sign in"}
       </button>
       <button className="btn-google" type="button" onClick={handleGoogleButton}>
         <GoogleIcon /> Sign in with google
       </button>
       <div className="auth-footer">
-        Don't have an account? <a onClick={() => navigate("/auth/signup")}>Sign up for free</a>
+        Don &apos;t have an account?{" "}
+        <a onClick={() => navigate("/auth/signup")}>Sign up for free</a>
       </div>
     </div>
   );
 }
 
-export default SignIn
+export default SignIn;

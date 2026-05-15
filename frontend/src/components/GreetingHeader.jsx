@@ -52,12 +52,9 @@ function GreetingHeader({ name }) {
           <li onClick={logout}><Link to=""><LogOut />Logout</Link></li>
         </ul>
       )}
-      {/* <div className="greeting-text">
-        <h2>{getGreeting()}, {name || "Explorer"}</h2>
-        <p>Track your expenses, start your day right</p>
-      </div> */}
     </div>
   );
 }
 
 export default GreetingHeader;
+
