@@ -1,51 +1,76 @@
-import { useState } from 'react'
-import { X } from 'lucide-react'
+import { useState } from "react";
+import { X } from "lucide-react";
+import { financeApi } from "../lib/api";
+import { useFinance } from "../context/FinancialContext";
+import { currentMonth } from "../lib/utils";
 
-function BudgetSetup({ current, onClose, onSave }) {
-  const [amount, setAmount] = useState(current ? String(current) : '')
+function BudgetSetup({ onClose }) {
+  const { fetchFinanceData, budget } = useFinance();
+  const [amount, setAmount] = useState(budget?.amount ? String(budget.amount) : "");
+  const [month, setMonth] = useState(currentMonth());
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSave = () => {
-    const parsed = parseFloat(amount)
-    if (!parsed || parsed <= 0) return
-    onSave(parsed)
-    onClose()
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (!amount || Number(amount) <= 0) {
+      setError("Please enter a valid budget amount.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await financeApi.setBudget({ amount: Number(amount), month });
+      await fetchFinanceData(month);
+      onClose();
+    } catch (err) {
+      setError(err.message || "Failed to save budget.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bottom-sheet-overlay" onClick={onClose}>
       <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="bottom-sheet-handle" />
         <div className="bottom-sheet-header">
-          <button className="bottom-sheet-close" onClick={onClose}>
-            <X size={20} />
-          </button>
-          <h2>{current ? 'Update Budget' : 'Set a Budget'}</h2>
-          <p>Set a monthly spending limit to keep your finances on track.</p>
+          <button className="bottom-sheet-close" onClick={onClose}><X size={20} /></button>
+          <h2>{budget ? "Update Budget" : "Set Monthly Budget"}</h2>
         </div>
 
-        <div className="bottom-sheet-body">
+        {error && <div className="form-error">{error}</div>}
+
+        <form className="sheet-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Monthly Budget Amount</label>
-            <div className="amount-input-wrapper">
-              <span className="currency-symbol">₦</span>
-              <input
-                type="number"
-                placeholder="0.00"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="amount-input"
-                autoFocus
-              />
-            </div>
+            <label>Month</label>
+            <input
+              type="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              required
+            />
           </div>
 
-          <button className="add-expense-btn" onClick={handleSave}>
-            {current ? 'Update Budget' : 'Set Budget'}
+          <div className="form-group">
+            <label>Budget Amount (₦)</label>
+            <input
+              type="number"
+              placeholder="e.g. 150000"
+              min="1"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="sheet-submit-btn" disabled={loading}>
+            {loading ? "Saving…" : budget ? "Update Budget" : "Set Budget"}
           </button>
-        </div>
+        </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default BudgetSetup
+export default BudgetSetup;
