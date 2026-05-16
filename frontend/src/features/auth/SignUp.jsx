@@ -54,35 +54,33 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export function SignUp() {
+export function SignUp({ onSwitch }) {
   const navigate = useNavigate();
+  const { storeSession } = useAuth();
+ 
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [success, setSuccess] = useState(false);
-
-  const { login } = useAuth();
-
+ 
   const validate = () => {
     const e = {};
     if (!form.name.trim()) e.name = "Full name is required";
     if (!form.email.trim()) e.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = "Enter a valid email";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Enter a valid email";
     if (!form.password) e.password = "Password is required";
-    else if (form.password.length < 6)
-      e.password = "Password must be at least 6 characters";
+    else if (form.password.length < 6) e.password = "Password must be at least 6 characters";
     return e;
   };
-
+ 
   const handleChange = (field) => (e) => {
-    setForm((f) => ({ ...f, [field]: e.target.value }));
-    if (errors[field]) setErrors((er) => ({ ...er, [field]: "" }));
+    setForm(f => ({ ...f, [field]: e.target.value }));
+    if (errors[field]) setErrors(er => ({ ...er, [field]: "" }));
     setApiError("");
   };
-
+ 
   const handleGoogleButton = useCallback(async () => {
     setApiError("");
     try {
@@ -91,35 +89,32 @@ export function SignUp() {
       setApiError(err?.message || "Google sign-in is unavailable.");
     }
   }, []);
-
+ 
   const handleSubmit = async () => {
     const e = validate();
-    if (Object.keys(e).length) {
-      setErrors(e);
-      return;
-    }
+    if (Object.keys(e).length) { setErrors(e); return; }
     setLoading(true);
     setApiError("");
     try {
       const res = await fetch("http://localhost:8000/api/auth/register/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
           password: form.password,
         }),
       });
-
+ 
       const data = await res.json();
       if (!res.ok) {
         setApiError(data?.message || "Registration failed");
         return;
       }
-
-      login(data.user);
+ 
+      // Save token + user to localStorage so PrivateRoute lets us through
+      storeSession(data);
+      setSuccess(true);
       navigate("/dashboard");
     } catch {
       setApiError("Something went wrong. Please try again.");

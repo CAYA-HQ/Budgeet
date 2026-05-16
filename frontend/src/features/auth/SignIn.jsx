@@ -33,8 +33,10 @@ const GoogleIcon = () => (
   </svg>
 );
 
-function SignIn() {
+function SignIn({ onSwitch }) {
   const navigate = useNavigate();
+  const { storeSession } = useAuth();
+ 
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPw, setShowPw] = useState(false);
@@ -42,10 +44,7 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [success, setSuccess] = useState(false);
-
-  const { login } = useAuth();
-
-
+ 
   const validate = () => {
     const e = {};
     if (!form.email.trim()) e.email = "Email is required";
@@ -53,13 +52,13 @@ function SignIn() {
     if (!form.password) e.password = "Password is required";
     return e;
   };
-
+ 
   const handleChange = (field) => (e) => {
     setForm(f => ({ ...f, [field]: e.target.value }));
     if (errors[field]) setErrors(er => ({ ...er, [field]: "" }));
     setApiError("");
   };
-
+ 
   const handleGoogleButton = useCallback(async () => {
     setApiError("");
     try {
@@ -68,28 +67,26 @@ function SignIn() {
       setApiError(err?.message || "Google sign-in is unavailable.");
     }
   }, []);
-
+ 
   const handleSubmit = async () => {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
     setLoading(true);
     setApiError("");
-
     try {
       const res = await fetch("http://localhost:8000/api/auth/login/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
-
+ 
       const data = await res.json();
       if (!res.ok) {
         setApiError(data?.message || "Invalid email or password. Please try again.");
         return;
       }
-
+ 
+      // Save token + user to localStorage so PrivateRoute lets us through
       storeSession(data);
       setSuccess(true);
       navigate("/dashboard");
@@ -98,9 +95,8 @@ function SignIn() {
     } finally {
       setLoading(false);
     }
-      
   };
-
+  
   if (success) return (
     <div className="success-screen form-enter">
       <div className="success-icon">✓</div>
