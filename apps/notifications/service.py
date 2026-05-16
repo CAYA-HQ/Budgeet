@@ -42,14 +42,6 @@ def check_budget_status(user, month):
     Returns a dict describing how the user is doing against their budget
     for the given month (YYYY-MM string).
 
-    Return shape:
-    {
-        "has_budget": bool,
-        "budget_amount": Decimal,
-        "total_spent": Decimal,
-        "remaining": Decimal,
-        "percent_used": int,       # 0-100+
-    }
     """
     # Import here to avoid circular imports (finance imports notifications)
     from apps.finance.models import Budget, Expense
@@ -97,7 +89,7 @@ def notify_welcome(user):
     Notification.objects.create(
         user=user,
         type="welcome",
-        title="Welcome to Budgeet 🎉",
+        title="Welcome to Budgeet ",
         message=(
             f"Hi {first_name}! Your account is ready. "
             "Start by setting your monthly budget, then log your first expense."
@@ -108,12 +100,6 @@ def notify_welcome(user):
 def notify_expense_added(user, expense):
     """
     Called every time an expense is successfully saved.
-
-    Does two things:
-    1. Creates an expense_added confirmation notification.
-    2. Checks budget usage for the expense's month and fires a budget
-       warning if needed (80% = alert, 100%+ = exceeded).
-       Deduplicates so only one budget warning fires per day.
     """
     # 1 — Expense confirmation
     Notification.objects.create(
@@ -170,7 +156,7 @@ def notify_expense_added(user, expense):
             Notification.objects.create(
                 user=user,
                 type="on_track",
-                title="You're On Track ✅",
+                title="You're On Track ",
                 message=(
                     f"Great discipline! You've used {percent}% of your "
                     f"{expense.date.strftime('%B')} budget so far. Keep it up."
@@ -185,7 +171,7 @@ def notify_income_added(user, income):
     Notification.objects.create(
         user=user,
         type="income_added",
-        title="Income Recorded 💰",
+        title="Income Recorded ",
         message=(
             f"{_format_naira(income.amount)} ({income.income_type.title()}) "
             f"has been added to your {income.date.strftime('%B')} income."

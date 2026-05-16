@@ -29,11 +29,9 @@ def _current_month() -> str:
 def budget(request):
     """
     POST /api/finance/budget/
-        Body: { amount, month }   (month defaults to current month if omitted)
-        Creates or updates the budget for that month.
 
     GET /api/finance/budget/
-        Returns the budget for the current month (or null).
+        
     """
     user = request.user
 
@@ -71,20 +69,9 @@ def budget(request):
 def expenses(request):
     """
     POST /api/finance/expenses/
-        Body: { label, amount, category, date }
-        Adds a new expense for the authenticated user.
-
+        
     GET /api/finance/expenses/
-        Returns:
-        {
-            budget: { amount, month } | null,
-            expenses: [...],
-            total_spent: <number>,
-            remaining: <number> | null,
-        }
-
-        Optional query params:
-            ?month=2025-05   (filter expenses to a specific month, default = current)
+        
     """
     user = request.user
 
@@ -235,13 +222,7 @@ def income_detail(request, pk):
 def summary(request):
     """
     GET /api/finance/summary/
-    Optional ?month=YYYY-MM  (default = current month)
-
-    Returns a full financial snapshot for the month:
-    {
-        month, budget, total_spent, remaining,
-        total_income, net, expenses, incomes
-    }
+    
     """
     user = request.user
     month = request.query_params.get("month", _current_month())

@@ -9,7 +9,7 @@ def send_welcome_email(user):
     """
     first_name = user.name.split()[0] if user.name else "there"
 
-    subject = "Welcome to Budgeet 🎉"
+    subject = "Welcome to Budgeet "
 
     plain_message = f"""
 Hi {first_name},
@@ -57,7 +57,7 @@ The Budgeet Team
       <p>Smart personal finance tracking</p>
     </div>
     <div class="body">
-      <h2>Welcome, {first_name}! 🎉</h2>
+      <h2>Welcome, {first_name}! </h2>
       <p>Your account is all set up. Here's how to get started:</p>
       <div class="steps">
         <p><span>💰</span> Set your <strong>monthly budget</strong></p>
@@ -67,7 +67,7 @@ The Budgeet Team
       <a href="http://localhost:5173/dashboard" class="btn">Go to Dashboard →</a>
     </div>
     <div class="footer">
-      <p>You're receiving this because you signed up for Budgeet.<br/>© 2025 Budgeet. All rights reserved.</p>
+      <p>You're receiving this because you signed up for Budgeet.<br/>© 2026 Budgeet. All rights reserved.</p>
     </div>
   </div>
 </body>
