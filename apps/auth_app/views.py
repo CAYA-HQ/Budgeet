@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from core.emails import send_welcome_email
+from apps.notifications.service import notify_welcome
 
 User = get_user_model()
 
@@ -37,6 +38,7 @@ def register(request):
 
     user = serializer.save()
     send_welcome_email(user)
+    notify_welcome(user)
     return Response(
         {
             "user": UserSerializer(user).data,
@@ -181,8 +183,9 @@ def google_auth(request):
         defaults={"name": name, "avatar": avatar},
     )
     if created:
-        # New user — send welcome email
+        # New user — send welcome email + in-app notification
         send_welcome_email(user)
+        notify_welcome(user)
     elif avatar:
         # Returning user — keep avatar fresh
         User.objects.filter(pk=user.pk).update(avatar=avatar)

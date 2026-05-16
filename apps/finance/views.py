@@ -7,6 +7,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Budget, Expense, Income
+from apps.notifications.service import (
+    notify_expense_added,
+    notify_income_added,
+    notify_budget_set,
+)
 from .serializers import BudgetSerializer, ExpenseSerializer, IncomeSerializer
 
 
@@ -48,6 +53,7 @@ def budget(request):
             return Response({"message": str(first_error)}, status=status.HTTP_400_BAD_REQUEST)
 
         budget_obj = serializer.save(user=user)
+        notify_budget_set(user, budget_obj, updated=instance is not None)
         return Response(BudgetSerializer(budget_obj).data, status=status.HTTP_200_OK)
 
     # GET — return current month's budget
@@ -89,6 +95,7 @@ def expenses(request):
             return Response({"message": str(first_error)}, status=status.HTTP_400_BAD_REQUEST)
 
         expense_obj = serializer.save(user=user)
+        notify_expense_added(user, expense_obj)
         return Response(ExpenseSerializer(expense_obj).data, status=status.HTTP_201_CREATED)
 
     # GET
@@ -169,6 +176,7 @@ def incomes(request):
             first_error = next(iter(serializer.errors.values()))[0]
             return Response({"message": str(first_error)}, status=status.HTTP_400_BAD_REQUEST)
         income_obj = serializer.save(user=user)
+        notify_income_added(user, income_obj)
         return Response(IncomeSerializer(income_obj).data, status=status.HTTP_201_CREATED)
 
     # GET

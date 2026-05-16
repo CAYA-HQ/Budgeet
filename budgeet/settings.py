@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     # Local apps
     "apps.auth_app",
     "apps.finance",
+    "apps.notifications",
 ]
 
 MIDDLEWARE = [
