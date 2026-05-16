@@ -33,6 +33,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
 }
 
 .greeting-avatar {
@@ -68,15 +69,28 @@
 
 }
 .greeting-header> ul li{
-  font-weight: bold;
+  padding: 10px 2px;
   margin-top: 2rem;
+  /* background-color: green; */
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+.greeting-header> ul li a{
+  font-weight: bold;
+  /* margin-top: 2rem; */
   display: flex;
   align-items: center;
   gap: 12px;
-
 }
 .greeting-header> ul li:last-child{
   color: red;
+}
+
+.greeting-header > ul li:hover{
+    background-color: var(--budgeet-primary-hover);
+    /* padding: 2px; */
+    cursor: pointer;
 }
 /* ================================
    FILTER TABS
