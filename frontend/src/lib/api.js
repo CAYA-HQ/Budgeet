@@ -104,3 +104,22 @@ export const financeApi = {
   getSummary: (month) =>
     request(`/api/finance/summary/${month ? `?month=${month}` : ""}`),
 };
+
+// ─── Notifications API ────────────────────────────────────────────────────────
+
+export const notificationsApi = {
+  /** GET /api/notifications/ → { unread_count, notifications: [...] } */
+  getAll: () => request("/api/notifications/"),
+
+  /** POST /api/notifications/read-all/ → marks every notification as read */
+  markAllRead: () =>
+    request("/api/notifications/read-all/", { method: "POST" }),
+
+  /** POST /api/notifications/<id>/read/ → marks one notification as read */
+  markRead: (id) =>
+    request(`/api/notifications/${id}/read/`, { method: "POST" }),
+
+  /** DELETE /api/notifications/<id>/ → removes one notification */
+  delete: (id) =>
+    request(`/api/notifications/${id}/`, { method: "DELETE" }),
+};

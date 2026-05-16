@@ -15,16 +15,16 @@ import SignIn from "./features/auth/SignIn";
 import SignUp from "./features/auth/SignUp";
 
 /** Redirects unauthenticated users to /auth/signin */
-// function PrivateRoute({ children }) {
-//   const { isAuthenticated } = useAuth();
-//   return isAuthenticated ? children : <Navigate to="/auth/signin" replace />;
-// }
+ function PrivateRoute({ children }) {
+   const { isAuthenticated } = useAuth();
+   return isAuthenticated ? children : <Navigate to="/auth/signin" replace />;
+ }
 
 /** Redirects already-logged-in users away from auth pages */
-// function PublicOnlyRoute({ children }) {
-//   const { isAuthenticated } = useAuth();
-//   return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
-// }
+ function PublicOnlyRoute({ children }) {
+   const { isAuthenticated } = useAuth();
+   return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
+}
 
 function AppRoutes() {
   return (
