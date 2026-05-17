@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Search, Bell, X } from "lucide-react";
 import GreetingHeader from "../GreetingHeader";
 import styles from "./dashboard-header.module.css";
+import NotificationModal from "../NotificationModal";
+import { useAuth } from "../../context/AuthContext";
 
 /**
  THE NOTIFICATION OBJECT LOOKS SOMETHING LIKE THE BELOW:
@@ -28,18 +30,13 @@ import styles from "./dashboard-header.module.css";
 
  */
 
-const notifications = [
-  { dmyDate: "20th", title: "Notification one" },
-  { dmyDate: "20th", title: "Notification two" },
-  { dmyDate: "20th", title: "Notification three" },
-  { dmyDate: "20th", title: "Notification four" },
-];
-
 function DashboardHeader() {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showNotificationModal, setshowNotificationModal] = useState(false);
+  const { user } = useAuth();
+
   const allMockData = {
-    user: { name: "Elizabeth" },
+    user: { name: user?.name || "Explorer" },
   };
 
   const handleShowSearchBar = () => {
@@ -109,27 +106,10 @@ function DashboardHeader() {
         />
         <GreetingHeader name={allMockData.user.name} />
       </div>
-      {showNotificationModal && (
-        <div className="notification-modal bg-[#080808f8] w-full h-screen absolute inset-0 flex items-center justify-center z-40">
-          <X
-            className="text-red-600  absolute top-10 right-10 z-50  cursor-pointer"
-            onClick={() => setshowNotificationModal(false)}
-          />
-          <ul className="flex flex-col">
-            {notifications.map((notification, index) => (
-              <Link to="">
-                <li
-                  key={index}
-                  className="notification-item text-white flex gap-10"
-                >
-                  <p className="notification-date">{notification.dmyDate}</p>
-                  <p className="notification-title">{notification.title}</p>
-                </li>
-              </Link>
-            ))}
-          </ul>
-        </div>
-      )}
+      <NotificationModal
+        isModalOpen={showNotificationModal}
+        setIsModalOpen={setshowNotificationModal}
+      />
     </div>
   );
 }
