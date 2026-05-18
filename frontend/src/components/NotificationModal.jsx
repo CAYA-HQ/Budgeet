@@ -68,11 +68,11 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
     <>
       {isModalOpen && (
         <div
-          className="notification-modal bg-[#00000099] w-full h-screen absolute inset-0 flex items-center justify-center z-50"
+          className="notification-modal bg-[#000000f5] w-full h-screen absolute inset-0 flex items-center justify-center z-50"
           onClick={() => setIsModalOpen(false)}
         >
           <X
-            className="text-red absolute top-10 right-10 cursor-pointer text-white"
+            className="text-red-600 absolute top-10 right-10 cursor-pointer"
             onClick={() => setIsModalOpen(false)}
           />
 
@@ -84,7 +84,7 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
 
             <div className="notification-body">
               {loading && (
-                <p className="notification-empty">Loading…</p>
+                <p className="notification-empty text-white">Loading…</p>
               )}
 
               {error && (
