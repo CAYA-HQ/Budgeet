@@ -25,7 +25,7 @@ function GreetingHeader({ name }) {
 
   return (
     <div
-      className={`greeting-header h-full${styles.greetingsHeader}`}
+      className={`greeting-header h-full ${styles.greetingsHeader}`}
     >
       <button className="greeting-dropdown  flex items-center gap-2 cursor-pointer" onClick={handleDroDown}>
       <div className="greeting-avatar">
@@ -57,4 +57,3 @@ function GreetingHeader({ name }) {
 }
 
 export default GreetingHeader;
-

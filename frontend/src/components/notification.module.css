@@ -1,0 +1,11 @@
+.notification{
+    
+}
+.notification > header{
+    padding-inline: 2rem;
+}
+@media(max-width: 768px){
+    .notification > header{
+    padding-inline: 1rem;
+}
+}
