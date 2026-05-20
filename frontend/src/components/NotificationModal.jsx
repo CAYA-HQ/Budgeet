@@ -1,5 +1,5 @@
 import { X, Bell, Check, Trash2, CheckIcon, CheckCheck } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { notificationsApi } from "../lib/api";
 import styles from "./notification.module.css";
 
@@ -59,6 +59,7 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
+  const modalRef = useRef(null);
 
   // Fetch notifications whenever modal opens
   useEffect(() => {
@@ -77,6 +78,22 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
       .catch(() => setError("Could not load notifications."))
       .finally(() => setLoading(false));
   }, [isModalOpen]);
+
+  // Handle click outside to close
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen, setIsModalOpen]);
 
   const handleDelete = async (id, e) => {
     e.stopPropagation();
@@ -108,12 +125,12 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
       {isModalOpen && (
         <div
           className={`notification-modal bg-[var(--budgeet-primary-light)] w-full h-screen absolute inset-0 flex flex-col items-center justify-between z-50 ${styles.notification}`}
-          onClick={() => setIsModalOpen(false)}
         >
-          <header
-            className="notification-header bg-white px-10 w-full h-[5rem] text-[var(--budgeet-text-primary)] flex flex-col justify-between items-center border-b border-[var(--budgeet-text-secondary)]"
-            onClick={(e) => e.stopPropagation()}
+          <div 
+            ref={modalRef} 
+            className="w-full h-full flex flex-col"
           >
+            <header className="notification-header bg-white px-10 w-full h-[5rem] text-[var(--budgeet-text-primary)] flex flex-col justify-between items-center border-b border-[var(--budgeet-text-secondary)]">
             <div className="top flex items-center justify-between w-full">
               <h2 className="notification-header text-xl font-semibold ">
                 Notifications
@@ -156,10 +173,7 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
             </div>
           </header>
 
-          <div
-            className="notification-content w-full h-full flex"
-            onClick={(e) => e.stopPropagation()}
-          >
+            <div className="notification-content w-full h-full flex">
             <div className="notification-body w-full flex justify-center items-center">
               {loading && (
                 <p className="notification-empty text-[var(--budgeet-primary)]">Loading…</p>
@@ -230,6 +244,7 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
                   View all {filteredNotifications.length} notifications
                 </button>
               )}
+            </div>
             </div>
           </div>
         </div>
