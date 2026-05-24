@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, ChevronUp, User, Settings, LogOut} from "lucide-react";
 import styles from "./greetings-header.module.css";
 
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 function GreetingHeader({ name }) {
   const [isOpen, setIsOpen] = useState(false);
   const { logout } = useAuth();
+  const dropdownRef = useRef(null);
 
 
   const getGreeting = () => {
@@ -22,10 +23,29 @@ function GreetingHeader({ name }) {
     setIsOpen(!isOpen);
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !event.target.closest(".greeting-dropdown")
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <div
-      className={`greeting-header h-full${styles.greetingsHeader}`}
+      className={`greeting-header h-full ${styles.greetingsHeader}`}
     >
       <button className="greeting-dropdown  flex items-center gap-2 cursor-pointer" onClick={handleDroDown}>
       <div className="greeting-avatar">
@@ -35,7 +55,7 @@ function GreetingHeader({ name }) {
         {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
       </button>
       {isOpen && (
-        <ul className="greeting-dropdown-content absolute top-[4rem] right-0 md:right-19 shadow-2xl z-50">
+        <ul ref={dropdownRef} className="greeting-dropdown-content absolute top-[4rem] right-0 md:right-19 shadow-2xl z-50">
           <div className="h-20 flex items-center justify-center gap-2 border-b">
             <div className="greeting-avatar">
               {name ? name.charAt(0).toUpperCase() : "E"}
@@ -57,4 +77,3 @@ function GreetingHeader({ name }) {
 }
 
 export default GreetingHeader;
-

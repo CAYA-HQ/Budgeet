@@ -99,11 +99,17 @@ function DashboardHeader() {
       <div
         className={`left h-full flex items-center gap-4 ${showSearchBar ? "hidden md:flex" : "flex"}`}
       >
-        <Bell
-          size={20}
-          className="text-gray-500 cursor-pointer hover:text-black transition-colors"
-          onClick={handlenotificationModal}
-        />
+        <div className="relative" onClick={handlenotificationModal}>
+          <span className={`notification-label  bg-[var(--budgeet-danger)] text-xs text-[var(--budgeet-primary)] font-heading grid place-content-center absolute -top-2 -right-1 rounded-2xl ${styles.notificationLabel}`}>
+            12
+          </span>
+          <Bell
+            size={20}
+            className="text-gray-500 cursor-pointer hover:text-black transition-colors"
+            
+          />
+        </div>
+
         <GreetingHeader name={allMockData.user.name} />
       </div>
       <NotificationModal

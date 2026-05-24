@@ -6,6 +6,10 @@
     padding-left: 1rem;
     /* padding-left: 4rem; */
 }
+.notificationLabel{
+    padding-inline: 2px;
+
+}
 @media (max-width: 768px) {
     .dashboardHeader{
     padding-inline: 1rem;
