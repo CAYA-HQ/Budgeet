@@ -1,22 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom'
 import { Toaster, toast } from 'react-hot-toast'
-import GreetingHeader from '../../components/GreetingHeader'
 import FilterTabs from '../../components/FilterTabs'
 import TotalSpendCard from '../../components/TotalSpendCard'
 import BudgetProgressBar from '../../components/BudgetProgressBar'
 import TransactionList from '../../components/TransactionList'
-import BottomNav from '../../components/BottomNav'
-import SideNav from '../../components/SideNav'
 import AddExpense from '../../components/AddExpense'
 import AddIncome from '../../components/AddIncome'
 import BudgetSetup from '../../components/BudgetSetup'
 import TransactionDetail from '../../components/TransactionDetail'
 import CalendarView from '../../components/CalendarView'
 import '../../styles/dashboard.css'
-
-// const allMockData = {
-//   user: { name: 'Ade' },
-// }
 
 const filterByDate = (transactions, filter) => {
   const now = new Date()
@@ -43,7 +37,6 @@ const filterByDate = (transactions, filter) => {
 
 function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState('today')
-  const [fabOpen, setFabOpen] = useState(false)
   const [showAddExpense, setShowAddExpense] = useState(false)
   const [showAddIncome, setShowAddIncome] = useState(false)
   const [showBudgetSetup, setShowBudgetSetup] = useState(false)
@@ -60,13 +53,21 @@ function DashboardPage() {
     .filter((t) => t.type === 'expense')
     .reduce((sum, t) => sum + t.amount, 0)
 
+  const { addExpenseTrigger, addIncomeTrigger } = useOutletContext()
+
+useEffect(() => {
+  if (addExpenseTrigger !== undefined) setShowAddExpense(true)
+}, [addExpenseTrigger])
+
+useEffect(() => {
+  if (addIncomeTrigger !== undefined) setShowAddIncome(true)
+}, [addIncomeTrigger])
+
   const handleAddExpense = () => {
-    setFabOpen(false)
     setShowAddExpense(true)
   }
 
   const handleAddIncome = () => {
-    setFabOpen(false)
     setShowAddIncome(true)
   }
 
@@ -92,7 +93,7 @@ function DashboardPage() {
   }
 
   return (
-    <div className="app-layout">
+    <div className="main-content">
       <Toaster
         position="top-center"
         toastOptions={{
@@ -113,35 +114,25 @@ function DashboardPage() {
           },
         }}
       />
-      {/* <SideNav /> */}
-      <div className="main-content">
-  {/* <GreetingHeader name={allMockData.user.name} /> */}
-  <FilterTabs onFilterChange={setActiveFilter} />
-  <TotalSpendCard amount={totalSpend} />
-  <BudgetProgressBar
-    spent={thisMonthExpenses}
-    total={budget.total}
-    onTap={() => setShowBudgetSetup(true)}
-  />
-  {activeFilter === 'calendar' ? (
-    <CalendarView
-      transactions={transactions}
-      onTapTransaction={setSelectedTransaction}
-    />
-  ) : (
-    <TransactionList
-      transactions={filteredTransactions}
-      onAddExpense={handleAddExpense}
-      onTapTransaction={setSelectedTransaction}
-    />
-  )}
-</div>
-      <BottomNav
-        fabOpen={fabOpen}
-        setFabOpen={setFabOpen}
-        onAddExpense={handleAddExpense}
-        onAddIncome={handleAddIncome}
+      <FilterTabs onFilterChange={setActiveFilter} />
+      <TotalSpendCard amount={totalSpend} />
+      <BudgetProgressBar
+        spent={thisMonthExpenses}
+        total={budget.total}
+        onTap={() => setShowBudgetSetup(true)}
       />
+      {activeFilter === 'calendar' ? (
+        <CalendarView
+          transactions={transactions}
+          onTapTransaction={setSelectedTransaction}
+        />
+      ) : (
+        <TransactionList
+          transactions={filteredTransactions}
+          onAddExpense={handleAddExpense}
+          onTapTransaction={setSelectedTransaction}
+        />
+      )}
       {showAddExpense && (
         <AddExpense
           onClose={() => setShowAddExpense(false)}
@@ -155,21 +146,20 @@ function DashboardPage() {
         />
       )}
       {editingTransaction && (
-  <AddExpense
-    onClose={() => setEditingTransaction(null)}
-    onSave={(updated) => {
-      setTransactions((prev) =>
-        prev.map((t) =>
-          t === editingTransaction ? { ...updated, type: 'expense' } : t
-        )
-      )
-      setEditingTransaction(null)
-      toast.success('Expense updated')
-    }}
-    existing={editingTransaction}
-  />
-)}
-
+        <AddExpense
+          onClose={() => setEditingTransaction(null)}
+          onSave={(updated) => {
+            setTransactions((prev) =>
+              prev.map((t) =>
+                t === editingTransaction ? { ...updated, type: 'expense' } : t
+              )
+            )
+            setEditingTransaction(null)
+            toast.success('Expense updated')
+          }}
+          existing={editingTransaction}
+        />
+      )}
       {showBudgetSetup && (
         <BudgetSetup
           current={budget.total}
@@ -182,10 +172,9 @@ function DashboardPage() {
           transaction={selectedTransaction}
           onClose={() => setSelectedTransaction(null)}
           onEdit={() => {
-          setEditingTransaction(selectedTransaction)
-          setSelectedTransaction(null)
-        }}
-
+            setEditingTransaction(selectedTransaction)
+            setSelectedTransaction(null)
+          }}
           onDelete={() => handleDeleteTransaction(selectedTransaction)}
         />
       )}
