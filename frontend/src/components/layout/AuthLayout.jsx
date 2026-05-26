@@ -5,7 +5,7 @@ function AuthLayout() {
   return (
     <div className="auth-root">
       <div className="auth-left">
-        <a className="auth-logo" href="#">
+        <a className="auth-logo" href="/">
           <span className="logo-icon">B</span>
           <span className="logo-text">Budgeet</span>
         </a>
