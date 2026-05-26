@@ -64,7 +64,7 @@ function BudgetSetup({ onClose }) {
             />
           </div>
 
-          <button type="submit" className="sheet-submit-btn" disabled={loading}>
+          <button type="submit" className="sheet-submit-btn bg-[var(--budgeet-primary)] text-white px-2 py-1 rounded-lg" disabled={loading}>
             {loading ? "Saving…" : budget ? "Update Budget" : "Set Budget"}
           </button>
         </form>

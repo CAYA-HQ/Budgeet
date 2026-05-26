@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, ChevronUp, User, Settings, LogOut} from "lucide-react";
+import { ChevronDown, ChevronUp, User, Settings, LogOut, LogIn } from "lucide-react";
 import styles from "./greetings-header.module.css";
 
 import { useAuth } from "../context/AuthContext";
@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 function GreetingHeader({ name }) {
   const [isOpen, setIsOpen] = useState(false);
-  const { logout } = useAuth();
+  const { logout, user, isAuthenticated } = useAuth();
   const dropdownRef = useRef(null);
 
 
@@ -49,7 +49,7 @@ function GreetingHeader({ name }) {
     >
       <button className="greeting-dropdown  flex items-center gap-2 cursor-pointer" onClick={handleDroDown}>
       <div className="greeting-avatar">
-        {name ? name.charAt(0).toUpperCase() : "E"}
+        {user ? user.name.charAt(0).toUpperCase() : "E"}
       </div>
       
         {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -69,7 +69,14 @@ function GreetingHeader({ name }) {
           </div>
           <li><Link to=""><User /> My Profile</Link></li>
           <li><Link to=""><Settings />Settings</Link></li>
-          <li onClick={logout}><Link to=""><LogOut />Logout</Link></li>
+          {isAuthenticated ? (
+            <li onClick={logout}>
+              <Link to="/auth/signin"><LogOut /> Logout</Link>
+            </li>
+          ) : (
+            <li><Link to="/auth/signin"><LogIn /> Login</Link></li>
+          )}
+      
         </ul>
       )}
     </div>

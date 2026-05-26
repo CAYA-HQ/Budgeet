@@ -1,11 +1,14 @@
 import { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
+
 
 const TOKEN_KEY = "budgeet_token";
 const USER_KEY  = "budgeet_user";
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate();
   const [user, setUser] = useState(() => {
     try {
       const raw = localStorage.getItem(USER_KEY);
@@ -30,6 +33,8 @@ export function AuthProvider({ children }) {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     setUser(null);
+
+    navigate("/auth/signin");
   };
 
   const isAuthenticated = Boolean(user && localStorage.getItem(TOKEN_KEY));

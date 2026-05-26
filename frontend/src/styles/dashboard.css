@@ -1,11 +1,11 @@
 /* ================================
    RESET & BASE
 ================================ */
-* {
-  margin: 0;
+/* * { */
+  /* margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
+  box-sizing: border-box; */
+/* } */
 
 /* ================================
    APP LAYOUT
@@ -19,7 +19,6 @@
 }
 
 .main-content {
-  flex: 1;
   padding-inline: 16px;
   padding-bottom: 100px;
   padding-top: 2rem;
@@ -512,7 +511,7 @@
   
   }
 .app-layout {
-  padding: 0;
+  /* padding: 0; */
 }
   .main-content {
     /* margin-left: 40px; */

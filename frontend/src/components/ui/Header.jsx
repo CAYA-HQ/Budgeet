@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./header.module.css";
 
@@ -39,6 +39,12 @@ function Header() {
           onClick={handleGuestClick}
         >
           Demo
+        </button>
+        <button className="to-dashboard">
+          {
+            isLoggedIn && <Link to="/dashboard"> Dashbaord </Link>
+
+          }
         </button>
         <button
           className={`cta ${isLoggedIn ? "bg-red-600" : "bg-[var(--budgeet-primary)]"} text-white text-sm md:text-base font-normal md:font-semibold px-2 rounded cursor-pointer`}
