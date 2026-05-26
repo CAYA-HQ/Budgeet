@@ -29,7 +29,8 @@ function LandingPage() {
         </div>
         <button 
           className="bg-[var(--budgeet-primary)] text-white text-xl font-semibold p-2 px-4 rounded-2xl cursor-pointer"
-          onClick={() => navigate("/auth", { state: { screen: "signup" } })}
+          // onClick={() => navigate("/auth", { state: { screen: "signup" } })}
+          onClick={() => navigate("/auth/signup")}
         >
           Join for Free
         </button>
