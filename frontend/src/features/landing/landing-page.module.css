@@ -1,0 +1,67 @@
+.landingPage {
+    background-color: var(--budgeet-primary-light);
+}
+.landingPage>div:first-child {
+    height: 120px;
+    position: relative;
+}
+
+.landingPage>div:first-child>span {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+
+}
+
+.landingPage>div:first-child>span:nth-child(1) {
+    top: 0px;
+    z-index: 3;
+    animation: cycle 3s infinite;
+
+}
+
+.landingPage>div:first-child>span:nth-child(2) {
+    top: 10px;
+    z-index: 2;
+    animation: cycle 3s infinite;
+    animation-delay: -1s;
+}
+
+.landingPage>div:first-child>span:nth-child(3) {
+    top: 10px;
+    z-index: 1;
+    animation: cycle 3s infinite;
+    animation-delay: -2s;
+}
+
+.landingPage>button{
+    padding: 0.8rem;
+    padding-inline: 1.2rem;
+    cursor: pointer;
+}
+@keyframes cycle {
+
+    0% {
+        transform: translateY(0) scale(1);
+        z-index: 3;
+        opacity: 6;
+    }
+
+    33% {
+        transform: translateY(0) scale(0.95);
+        z-index: 2;
+        opacity: 0.5;
+    }
+
+    66% {
+        transform: translateY(0px) scale(0.9);
+        z-index: 1;
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        z-index: 3;
+        opacity: 1;
+    }
+}

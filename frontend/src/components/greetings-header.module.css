@@ -1,0 +1,13 @@
+.greetingsHeader{
+/* background-color: red; */
+}
+.greetingsHeader > ul{
+    /* background-color: red; */
+}
+.greetingsHeader > ul > li{
+    display: flex;
+}
+.greetingsHeader > ul > li:hover{
+    background-color: red;
+    cursor: pointer;
+}
