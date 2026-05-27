@@ -1,88 +1,113 @@
-import { X, Bell, Check, Trash2, CheckIcon, CheckCheck } from "lucide-react";
+import {
+  X,
+  Bell,
+  Trash2,
+  CheckCheck,
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  CheckCircle,
+  Sparkles,
+} from "lucide-react";
+
 import { useState, useEffect, useRef } from "react";
 import { notificationsApi } from "../lib/api";
 import styles from "./notification.module.css";
 
-const TYPE_COLORS = {
-  budget_alert: "#f59e0b",
-  budget_exceeded: "#ef4444",
-  on_track: "#22c55e",
-  weekly_summary: "#3b82f6",
-  expense_added: "#6366f1",
-  income_added: "#10b981",
-  welcome: "#000000",
+/* ── Type → icon + colour mapping ── */
+const TYPE_CONFIG = {
+  budget_alert: {
+    icon: AlertTriangle,
+    color: "#f59e0b",
+    bg: "#fffbeb",
+  },
+
+  budget_exceeded: {
+    icon: TrendingDown,
+    color: "#ef4444",
+    bg: "#fff5f5",
+  },
+
+  on_track: {
+    icon: CheckCircle,
+    color: "#22c55e",
+    bg: "#f0fdf4",
+  },
+
+  weekly_summary: {
+    icon: Sparkles,
+    color: "#3b82f6",
+    bg: "#eff6ff",
+  },
+
+  expense_added: {
+    icon: TrendingDown,
+    color: "#6366f1",
+    bg: "#f5f3ff",
+  },
+
+  income_added: {
+    icon: TrendingUp,
+    color: "#10b981",
+    bg: "#ecfdf5",
+  },
+
+  welcome: {
+    icon: Sparkles,
+    color: "#000AC2",
+    bg: "#eff1ff",
+  },
+};
+
+const DEFAULT_CONFIG = {
+  icon: Bell,
+  color: "#78778B",
+  bg: "#f5f5f5",
 };
 
 function timeAgo(dateStr) {
   const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+
   if (diff < 60) return "Just now";
   if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
   if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-// const notifications = [
-//   {
-//     id: 1,
-//     title: "New message",
-//     message: "You have a new message from Emmanuel Faremi.",
-//     is_read: false,
-//   },
-//     {
-//     id: 2,
-//     title: "New message",
-//     message: "You have a new message from Oluwatosin.",
-//     is_read: false,
-//   },
-//     {
-//     id: 3,
-//     title: "New message",
-//     message: "You have a new message from Suru Immanuel.",
-//     is_read: false,
-//   },
-//     {
-//     id: 4,
-//     title: "New message",
-//     message: "You have a new message from Omooga Samuel.",
-//     is_read: false,
-//   },
-//   {
-//     id: 4,
-//     title: "New message",
-//     message: "You have a new message from Emmanuel Okon.",
-//     is_read: false,
-//   },
-// ]
-
-function NotificationModal({ isModalOpen, setIsModalOpen}) {
+function NotificationModal({ isModalOpen, setIsModalOpen }) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
+
   const modalRef = useRef(null);
 
-  // Fetch notifications whenever modal opens
   useEffect(() => {
     if (!isModalOpen) return;
+
     setLoading(true);
     setError("");
+
     notificationsApi
       .getAll()
       .then((data) => {
         setNotifications(data.notifications || []);
-        // Mark all as read when user opens the modal
-        if (data.unread_count > 0) {
-          notificationsApi.markAllRead();
-        }
       })
-      .catch(() => setError("Could not load notifications."))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        setError("Could not load notifications.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [isModalOpen]);
 
-  // Handle click outside to close
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(e.target)
+      ) {
         setIsModalOpen(false);
       }
     };
@@ -90,169 +115,353 @@ function NotificationModal({ isModalOpen, setIsModalOpen}) {
     if (isModalOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
+
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
     };
   }, [isModalOpen, setIsModalOpen]);
 
   const handleDelete = async (id, e) => {
     e.stopPropagation();
+
     try {
       await notificationsApi.delete(id);
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-    } catch {
-      // silently ignore
-    }
+
+      setNotifications((prev) =>
+        prev.filter((n) => n.id !== id)
+      );
+    } catch {}
   };
 
   const handleMarkRead = async (id) => {
     try {
       await notificationsApi.markRead(id);
+
       setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
+        prev.map((n) =>
+          n.id === id
+            ? { ...n, is_read: true }
+            : n
+        )
       );
-    } catch {
-      // silently ignore
-    }
+    } catch {}
   };
 
-  const filteredNotifications = activeFilter === "unread"
-    ? notifications.filter((n) => !n.is_read)
-    : notifications;
+  const handleMarkAllRead = async () => {
+    try {
+      await notificationsApi.markAllRead();
+
+      setNotifications((prev) =>
+        prev.map((n) => ({
+          ...n,
+          is_read: true,
+        }))
+      );
+    } catch {}
+  };
+
+  const filtered =
+    activeFilter === "unread"
+      ? notifications.filter((n) => !n.is_read)
+      : notifications;
+
+  const unreadCount = notifications.filter(
+    (n) => !n.is_read
+  ).length;
 
   return (
     <>
       {isModalOpen && (
-        <div
-          className={`notification-modal bg-[var(--budgeet-primary-light)] w-full h-screen absolute inset-0 flex flex-col items-center justify-between z-50 ${styles.notification}`}
-        >
-          <div 
-            ref={modalRef} 
-            className="w-full h-full flex flex-col"
-          >
-            <header className="notification-header bg-white px-10 w-full h-[5rem] text-[var(--budgeet-text-primary)] flex flex-col justify-between items-center border-b border-[var(--budgeet-text-secondary)]">
-            <div className="top flex items-center justify-between w-full">
-              <h2 className="notification-header text-xl font-semibold ">
-                Notifications
-              </h2>
-              <X
-                className="text-red-600 cursor-pointer"
-                onClick={() => setIsModalOpen(false)}
-              />
-            </div>
-            <div className="notifification-filter w-full text-[var(--budgeet-text-secondary)] flex justify-between gap-4 self-start">
-              <div className="left flex gap-6">
-                <button
-                  className="all cursor-pointer"
-                  onClick={() => setActiveFilter("all")}
-                  style={{
-                    fontWeight: activeFilter === "all" ? "500" : "normal",
-                    textDecoration: activeFilter === "all" ? "underline" : "none",
-                    textDecorationThickness: activeFilter === "all" ? "2px" : "auto",
-                    textUnderlineOffset: "6px",
-                    color: activeFilter === "all" ? "var(--budgeet-text-primary)" : "inherit"
-                  }}
-                >
-                  All Notifications
-                </button>
-                <button
-                  className="unread cursor-pointer"
-                  onClick={() => setActiveFilter("unread")}
-                  style={{
-                    fontWeight: activeFilter === "unread" ? "500" : "normal",
-                    textDecoration: activeFilter === "unread" ? "underline" : "none",
-                    textDecorationThickness: activeFilter === "unread" ? "2px" : "auto",
-                    textUnderlineOffset: "6px",
-                    color: activeFilter === "unread" ? "var(--budgeet-text-primary)" : "inherit"
-                  }}
-                >
-                  Unread
-                </button>
+        <div className={styles.notification}>
+          <div ref={modalRef}>
+
+            {/* HEADER */}
+            <header>
+
+              <div className={styles.top}>
+                <h2>
+                  Notifications
+
+                  {unreadCount > 0 && (
+                    <span>{unreadCount} new</span>
+                  )}
+                </h2>
+
+                <X
+                  size={20}
+                  onClick={() => setIsModalOpen(false)}
+                />
               </div>
-              <button 
-                className="mark-read flex items-center gap-2 hover:text-[var(--budgeet-text-primary)] transition-colors"
-                onClick={async () => {
-                  await notificationsApi.markAllRead();
-                  setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-                }}
+
+              {/* FILTERS */}
+              <div
+                className={
+                  styles["notifification-filter"]
+                }
               >
-                <CheckCheck size={14} className="flex"/> Mark all as read
-              </button>
-            </div>
-          </header>
+                <div className={styles.left}>
+                  {["all", "unread"].map((f) => (
+                    <button
+                      key={f}
+                      onClick={() =>
+                        setActiveFilter(f)
+                      }
+                      style={{
+                        fontWeight:
+                          activeFilter === f
+                            ? "600"
+                            : "500",
 
-            <div className="notification-content w-full h-full flex">
-            <div className="notification-body w-full flex justify-center items-center">
-              {loading && (
-                <p className="notification-empty text-[var(--budgeet-primary)]">Loading…</p>
-              )}
-
-              {error && (
-                <p className="notification-empty" style={{ color: "#ef4444" }}>
-                  {error}
-                </p>
-              )}
-
-              {!loading && !error && filteredNotifications.length === 0 && (
-                <div className="notification-empty">
-                  <Bell
-                    size={32}
-                    style={{ opacity: 0.3, margin: "0 auto 8px" }}
-                  />
-                  <p>You're all caught up!</p>
+                        textDecoration:
+                          activeFilter === f
+                            ? "underline"
+                            : "none",
+                      }}
+                    >
+                      {f === "all"
+                        ? "All"
+                        : `Unread${
+                            unreadCount > 0
+                              ? ` (${unreadCount})`
+                              : ""
+                          }`}
+                    </button>
+                  ))}
                 </div>
-              )}
 
-              {!loading &&
-                filteredNotifications.slice(0, 7).map((notification) => (
+                {unreadCount > 0 && (
+                  <button
+                    className={styles["mark-read"]}
+                    onClick={handleMarkAllRead}
+                  >
+                    <CheckCheck size={13} />
+                    Mark all read
+                  </button>
+                )}
+              </div>
+            </header>
+
+            {/* BODY */}
+            <div
+              className={
+                styles["notification-content"]
+              }
+            >
+              <div
+                className={styles["notification-body"]}
+              >
+
+                {/* LOADING */}
+                {loading && (
                   <div
-                    key={notification.id}
-                    className={`notification-item ${!notification.is_read ? "unread" : ""}`}
-                    onClick={() =>
-                      !notification.is_read && handleMarkRead(notification.id)
+                    className={
+                      styles["notification-empty"]
                     }
                   >
-                    {/* Colour dot for notification type */}
-                    <div
-                      className="notification-dot"
+                    <Bell size={36} />
+                    <p>Loading notifications...</p>
+                  </div>
+                )}
+
+                {/* ERROR */}
+                {error && (
+                  <div
+                    className={
+                      styles["notification-empty"]
+                    }
+                  >
+                    <AlertTriangle
+                      size={32}
                       style={{
-                        backgroundColor:
-                          TYPE_COLORS[notification.type] || "#6b7280",
+                        color: "#ef4444",
                       }}
                     />
 
-                    <div className="notification-info">
-                      <p className="notification-title">{notification.title}</p>
-                      <p className="notification-message">
-                        {notification.message}
+                    <p
+                      style={{
+                        color: "#ef4444",
+                      }}
+                    >
+                      {error}
+                    </p>
+                  </div>
+                )}
+
+                {/* EMPTY */}
+                {!loading &&
+                  !error &&
+                  filtered.length === 0 && (
+                    <div
+                      className={
+                        styles["notification-empty"]
+                      }
+                    >
+                      <Bell size={40} />
+
+                      <p
+                        style={{
+                          fontWeight: 600,
+                          color: "#111",
+                          fontSize: 14,
+                        }}
+                      >
+                        {activeFilter === "unread"
+                          ? "No unread notifications"
+                          : "You're all caught up!"}
                       </p>
-                      <p className="notification-date">
-                        {timeAgo(notification.created_at)}
+
+                      <p
+                        style={{
+                          fontSize: 12,
+                        }}
+                      >
+                        {activeFilter === "unread"
+                          ? "Switch to All to see your history"
+                          : "Notifications will appear here as you use Budgeet"}
                       </p>
                     </div>
+                  )}
 
-                    {/* Delete button */}
+                {/* ITEMS */}
+                {!loading &&
+                  !error &&
+                  filtered
+                    .slice(0, 20)
+                    .map((n) => {
+                      const config =
+                        TYPE_CONFIG[n.type] ||
+                        DEFAULT_CONFIG;
+
+                      const IconComponent =
+                        config.icon;
+
+                      return (
+                        <div
+                          key={n.id}
+                          className={`${
+                            styles[
+                              "notification-item"
+                            ]
+                          } ${
+                            !n.is_read
+                              ? styles.unread
+                              : ""
+                          }`}
+                          onClick={() =>
+                            !n.is_read &&
+                            handleMarkRead(n.id)
+                          }
+                        >
+
+                          {/* ICON */}
+                          <div
+                            className={
+                              styles[
+                                "notification-dot"
+                              ]
+                            }
+                            style={{
+                              backgroundColor:
+                                config.bg,
+
+                              color:
+                                config.color,
+                            }}
+                          >
+                            <IconComponent
+                              size={16}
+                              style={{
+                                color:
+                                  config.color,
+
+                                position:
+                                  "relative",
+
+                                zIndex: 1,
+                              }}
+                            />
+                          </div>
+
+                          {/* TEXT */}
+                          <div
+                            className={
+                              styles[
+                                "notification-info"
+                              ]
+                            }
+                          >
+                            <p
+                              className={
+                                styles[
+                                  "notification-title"
+                                ]
+                              }
+                            >
+                              {n.title}
+                            </p>
+
+                            <p
+                              className={
+                                styles[
+                                  "notification-message"
+                                ]
+                              }
+                            >
+                              {n.message}
+                            </p>
+
+                            <p
+                              className={
+                                styles[
+                                  "notification-date"
+                                ]
+                              }
+                            >
+                              {timeAgo(
+                                n.created_at
+                              )}
+                            </p>
+                          </div>
+
+                          {/* DELETE */}
+                          <button
+                            className={
+                              styles[
+                                "notification-delete-btn"
+                              ]
+                            }
+                            onClick={(e) =>
+                              handleDelete(
+                                n.id,
+                                e
+                              )
+                            }
+                            title="Dismiss"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      );
+                    })}
+
+                {/* VIEW ALL */}
+                {!loading &&
+                  filtered.length > 20 && (
                     <button
-                      className="notification-delete-btn"
-                      onClick={(e) => handleDelete(notification.id, e)}
-                      title="Dismiss"
+                      className={
+                        styles[
+                          "notification-view-all"
+                        ]
+                      }
                     >
-                      <Trash2 size={14} />
+                      View all{" "}
+                      {filtered.length} notifications
                     </button>
-                  </div>
-                ))}
-
-              {!loading && filteredNotifications.length > 7 && (
-                <button
-                  className="notification-view-all"
-                  onClick={() => {
-                    /* can route to a full notifications page later */
-                  }}
-                >
-                  View all {filteredNotifications.length} notifications
-                </button>
-              )}
-            </div>
+                  )}
+              </div>
             </div>
           </div>
         </div>
