@@ -54,7 +54,7 @@ function timeAgo(dateStr) {
 //   },
 // ]
 
-function NotificationModal({ isModalOpen, setIsModalOpen }) {
+function NotificationModal({ isModalOpen, setIsModalOpen}) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -169,7 +169,15 @@ function NotificationModal({ isModalOpen, setIsModalOpen }) {
                   Unread
                 </button>
               </div>
-              <button className="mark-read flex items-center gap-2">< CheckCheck size={14} className="flex"/> Read</button>
+              <button 
+                className="mark-read flex items-center gap-2 hover:text-[var(--budgeet-text-primary)] transition-colors"
+                onClick={async () => {
+                  await notificationsApi.markAllRead();
+                  setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+                }}
+              >
+                <CheckCheck size={14} className="flex"/> Mark all as read
+              </button>
             </div>
           </header>
 
