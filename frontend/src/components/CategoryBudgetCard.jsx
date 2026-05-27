@@ -46,7 +46,7 @@ export default function CategoryBudgetCard({ category, onEdit }) {
       </div>
 
       {/* Dynamic Cap Bar Slider */}
-      <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+      <div className="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
         <div 
           className={`h-full rounded-full transition-all duration-500 ${isOverBudget ? 'bg-red-600' : color}`}
           style={{ width: `${Math.min(percentage, 100)}%` }}
