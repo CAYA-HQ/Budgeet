@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Bell, X } from "lucide-react";
 import GreetingHeader from "../GreetingHeader";
 import styles from "./dashboard-header.module.css";
 import NotificationModal from "../NotificationModal";
 import { useAuth } from "../../context/AuthContext";
+import { notificationsApi } from "../../lib/api";
 
 /**
  THE NOTIFICATION OBJECT LOOKS SOMETHING LIKE THE BELOW:
@@ -33,11 +34,30 @@ import { useAuth } from "../../context/AuthContext";
 function DashboardHeader() {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showNotificationModal, setshowNotificationModal] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { user } = useAuth();
 
   const allMockData = {
     user: { name: user?.name || "Explorer" },
   };
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const data = await notificationsApi.getAll();
+        // Resilient count check: fallback to manual filtering if unread_count isn't provided directly
+        const count = typeof data.unread_count !== 'undefined' 
+          ? data.unread_count 
+          : (data.notifications?.filter(n => !n.is_read && !n.isRead).length || 0);
+          
+        setUnreadCount(count);
+      } catch (err) {
+        console.error("Failed to fetch notifications:", err);
+      }
+    };
+
+    fetchUnreadCount();
+  }, []);
 
   const handleShowSearchBar = () => {
     setShowSearchBar(!showSearchBar);
@@ -50,6 +70,10 @@ function DashboardHeader() {
 
   const handlenotificationModal = () => {
     setshowNotificationModal(!showNotificationModal);
+    // Optimistically clear the count when opening the modal
+    if (!showNotificationModal) {
+      setUnreadCount(0);
+    }
   };
 
   return (
@@ -99,10 +123,12 @@ function DashboardHeader() {
       <div
         className={`left h-full flex items-center gap-4 ${showSearchBar ? "hidden md:flex" : "flex"}`}
       >
-        <div className="relative" onClick={handlenotificationModal}>
-          <span className={`notification-label  bg-[var(--budgeet-danger)] text-xs text-[var(--budgeet-primary)] font-heading grid place-content-center absolute -top-2 -right-1 rounded-2xl ${styles.notificationLabel}`}>
-            12
-          </span>
+        <div className="relative cursor-pointer" onClick={handlenotificationModal}>
+          {unreadCount > 0 && (
+            <span className={`notification-label bg-[var(--budgeet-danger)] text-[10px] text-white font-bold absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center z-10 ${styles.notificationLabel}`}>
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
           <Bell
             size={20}
             className="text-gray-500 cursor-pointer hover:text-black transition-colors"

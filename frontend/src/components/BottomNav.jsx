@@ -23,7 +23,7 @@ function BottomNav({ fabOpen, setFabOpen, onAddExpense, onAddIncome }) {
       />
 
       <Link
-        to="/insights"
+        to="/dashboard/insights"
         className={`bottom-nav-item ${location.pathname === '/insights' ? 'active' : ''}`}
       >
         <Lightbulb size={24} />

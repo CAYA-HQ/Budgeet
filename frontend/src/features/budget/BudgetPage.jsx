@@ -40,7 +40,7 @@ function BudgetPage() {
     <div className="app-layout">
       <Toaster position="top-center" toastOptions={{ duration: 2500 }} />
 
-      <div className="main-content px-6 py-8 max-w-7xl mx-auto space-y-8 w-full flex flex-col justify-between gap-4">
+      <div className="main-content px-6 py-8 mb-12 max-w-7xl mx-auto w-full flex flex-col justify-between gap-4 ">
         <div className="page-header flex justify-between items-center">
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Budgets</h1>
           <button 
@@ -86,7 +86,7 @@ function BudgetPage() {
             )}
 
             {/* Categories Canvas Section */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-">
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-lg font-bold text-slate-800">Categories</h2>
