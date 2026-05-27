@@ -3,7 +3,7 @@ import { X, ChevronRight } from 'lucide-react'
 import CategoryPicker, { categories } from './CategoryPicker'
 import { financeApi } from "../lib/api";
 import { useFinance } from "../context/FinancialContext";
-import { currentMonth } from "../lib/utils";
+// import { currentMonth } from "../lib/utils";
 
 function AddExpense({ onClose, onSave, existing }) {
   const { fetchFinanceData } = useFinance();
@@ -11,9 +11,6 @@ function AddExpense({ onClose, onSave, existing }) {
   const [description, setDescription] = useState(existing ? (existing.label || existing.name || existing.description || "") : "");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // const [amount, setAmount] = useState(existing ? String(existing.amount) : '')
-  // const [description, setDescription] = useState(existing ? existing.description : '')
   const [category, setCategory] = useState(
     existing
       ? categories.find((c) => c.id === existing.category) || categories[0]
@@ -23,28 +20,6 @@ function AddExpense({ onClose, onSave, existing }) {
     existing ? existing.date : new Date().toISOString().split('T')[0]
   )
   const [showCategoryPicker, setShowCategoryPicker] = useState(false)
-
-  // const handleSave = () => {
-  //   if (!amount) return
-  //   const expense = {
-  //     amount: parseFloat(amount),
-  //     description,
-  //     category: category.id,
-  //     icon: category.id,
-  //     name: description || category.label,
-  //     date,
-  //     time: existing
-  //       ? existing.time
-  //       : new Date().toLocaleTimeString('en-US', {
-  //           hour: 'numeric',
-  //           minute: '2-digit',
-  //           hour12: true,
-  //         }),
-  //   }
-  //   onSave(expense)
-  //   onClose()
-  // }
-
   const handleSubmit = async (e) => {
       e.preventDefault();
       setError("");
@@ -76,7 +51,6 @@ function AddExpense({ onClose, onSave, existing }) {
         if (onSave) {
           onSave(result || payload);
         }
-        
         onClose();
       } catch (err) {
         setError(err.response?.data?.message || err.message || "Failed to save expense.");
@@ -101,7 +75,7 @@ function AddExpense({ onClose, onSave, existing }) {
                 : 'Enter the details of your expense to help you track your spending.'}
             </p>
           </div>
-
+          
           {error && <div className="form-error px-6 pb-2 text-red-500 text-sm font-medium">{error}</div>}
 
           <form className="bottom-sheet-body" onSubmit={handleSubmit}>

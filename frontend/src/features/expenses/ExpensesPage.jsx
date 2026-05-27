@@ -177,18 +177,16 @@ function ExpensesPage() {
           id: cat, 
           type: cat, 
           spent: 0, 
-          total: 0, // In a real app, this would come from category-specific budgets
+          total: 0,
           pctOfTotal: 0 
         };
       }
       acc[cat].spent += Number(exp.amount);
-      // Use total spent as the denominator for percentage if category budget is unknown
       acc[cat].pctOfTotal = totalSpent > 0 ? Math.round((acc[cat].spent / totalSpent) * 100) : 0;
       return acc;
     }, {})
   );
 
-  // Calculate dynamic metrics for cards
   const avgTransaction = expenses.length > 0 ? totalSpent / expenses.length : 0;
   const biggestExpenseObj = expenses.length > 0 
     ? [...expenses].sort((a, b) => Number(b.amount) - Number(a.amount))[0] 
@@ -200,15 +198,13 @@ function ExpensesPage() {
     <div className="app-layout">
       <Toaster position="top-center" toastOptions={{ duration: 2500 }} />
 
-      {/* Main Container Layout Area */}
       <div className="main-content px-6 py-8 max-w-7xl mx-auto space-y-8 w-full bg-slate-50/30">
         
-        {/* Dynamic Nav Control Header Row */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Expenses</h1>
           
           <div className="flex items-center gap-3">
-            {/* Time interval filter toggles */}
+            
             <div className="bg-slate-100 p-1 rounded-xl flex items-center text-xs font-semibold text-slate-500">
               {["This week", "This Month", "This Year"].map((range) => (
                 <button
@@ -225,7 +221,6 @@ function ExpensesPage() {
               ))}
             </div>
 
-            {/* Quick Action Trigger */}
             <button 
               onClick={() => setShowAddExpense(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition-all flex items-center gap-1 shadow-sm"
@@ -239,9 +234,7 @@ function ExpensesPage() {
           <div className="loading-state text-center text-slate-500 py-12">Loading expenses summary…</div>
         ) : (
           <>
-            {/* Top row cards metrics layout */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Total Spent Card */}
               <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-start">
                 <div className="space-y-4">
                   <span className="text-sm font-semibold text-slate-500">Total Spent/Year</span>
@@ -253,7 +246,6 @@ function ExpensesPage() {
                 <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center font-bold text-lg">📉</div>
               </div>
 
-              {/* Average Transaction Card */}
               <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-start">
                 <div className="space-y-4">
                   <span className="text-sm font-semibold text-slate-500">Avg/transaction</span>
@@ -265,7 +257,6 @@ function ExpensesPage() {
                 <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">💳</div>
               </div>
 
-              {/* Biggest Expense Card */}
               <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-start">
                 <div className="space-y-4">
                   <span className="text-sm font-semibold text-slate-500">Biggest expense</span>
@@ -278,7 +269,6 @@ function ExpensesPage() {
               </div>
             </div>
 
-            {/* Spending Breakdown List Canvas */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
               <div className="flex justify-between items-start">
                 <div>
@@ -288,16 +278,13 @@ function ExpensesPage() {
                 <span className="text-base font-bold text-slate-800">{formatNaira(totalSpent || 0)}</span>
               </div>
 
-              {/* Progress List Items Row Block */}
               <div className="divide-y divide-slate-100/70">
                 {categorySpending.map((row) => {
                   const meta = EXPENSE_ROW_META[row.type] || { label: "Other", icon: "📁", color: "bg-slate-600" };
-                  // Use totalSpent as fallback for the bar scale if no category budget is set
                   const barPercentage = (row.total || totalSpent) > 0 ? Math.min(Math.round((row.spent / (row.total || totalSpent)) * 100), 100) : 0;
 
                   return (
                     <div key={row.id} className="py-5 first:pt-0 last:pb-0 flex flex-col gap-3">
-                      {/* Top labels metadata column */}
                       <div className="flex justify-between items-start text-xs font-semibold">
                         <div className="flex items-center gap-2.5">
                           <span className="text-base leading-none">{meta.icon}</span>
@@ -320,7 +307,6 @@ function ExpensesPage() {
                         </div>
                       </div>
 
-                      {/* Line row wide progress track bar */}
                       <div className="w-full bg-slate-50 h-1.5 rounded-full overflow-hidden">
                         <div 
                           className={`h-full rounded-full transition-all duration-500 ${meta.color}`}
@@ -337,7 +323,7 @@ function ExpensesPage() {
         )}
       </div>
 
-      {/* Retained Bottom Sheet System Components */}
+      {/* Bottom Nav System Components for mobile */}
       <BottomNav
         fabOpen={fabOpen}
         setFabOpen={setFabOpen}
