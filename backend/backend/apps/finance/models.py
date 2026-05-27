@@ -26,15 +26,23 @@ class Budget(models.Model):
 
 class Expense(models.Model):
     CATEGORY_CHOICES = [
-        ("food", "Food"),
-        ("transport", "Transport"),
+        # Matches frontend CategoryPicker exactly
+        ("food",          "Food"),
+        ("bills",         "Bills/Utilities"),
+        ("family",        "Family"),
+        ("healthcare",    "Healthcare"),
+        ("fuel",          "Fuel"),
+        ("phone",         "Phone/Internet"),
+        ("education",     "Education"),
         ("entertainment", "Entertainment"),
-        ("health", "Health"),
-        ("shopping", "Shopping"),
-        ("utilities", "Utilities"),
-        ("education", "Education"),
-        ("housing", "Housing"),
-        ("other", "Other"),
+        ("shopping",      "Shopping"),
+        ("travel",        "Travel"),
+        ("socializing",   "Socializing"),
+        ("withdrawal",    "Withdrawal"),
+        ("transfer",      "Transfer"),
+        ("transport",     "Transportation"),
+        ("housing",       "Housing"),
+        ("miscellaneous", "Miscellaneous"),
     ]
 
     user = models.ForeignKey(

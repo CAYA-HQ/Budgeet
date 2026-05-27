@@ -8,4 +8,6 @@ urlpatterns = [
     path("incomes/", views.incomes, name="finance-incomes"),
     path("incomes/<int:pk>/", views.income_detail, name="finance-income-detail"),
     path("summary/", views.summary, name="finance-summary"),
+    path("search/", views.search, name="finance-search"),
+    path("categories/", views.category_breakdown, name="finance-categories"),
 ]

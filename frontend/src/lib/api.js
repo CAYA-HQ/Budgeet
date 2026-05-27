@@ -100,11 +100,14 @@ export const financeApi = {
   deleteIncome: (id) =>
     request(`/api/finance/incomes/${id}/`, { method: "DELETE" }),
 
+// Category breakdown (used by BudgetPage)
+  getCategoryBreakdown: (month) =>
+    request(`/api/finance/categories/${month ? `?month=${month}` : ""}`),
+ 
   // Summary (used by Insights)
   getSummary: (month) =>
     request(`/api/finance/summary/${month ? `?month=${month}` : ""}`),
 };
-
 // ─── Notifications API ────────────────────────────────────────────────────────
 
 export const notificationsApi = {
@@ -122,4 +125,19 @@ export const notificationsApi = {
   /** DELETE /api/notifications/<id>/ → removes one notification */
   delete: (id) =>
     request(`/api/notifications/${id}/`, { method: "DELETE" }),
+};
+
+// ─── Search API ─────── //
+export const searchApi = {
+  /**
+   * GET /api/finance/search/?q=<query>&type=<all|expense|income>&month=<YYYY-MM>&category=<cat>
+   *
+   */
+  search: ({ q, type = "all", month, category } = {}) => {
+    const params = new URLSearchParams({ q });
+    if (type && type !== "all") params.append("type", type);
+    if (month)    params.append("month", month);
+    if (category) params.append("category", category);
+    return request(`/api/finance/search/?${params.toString()}`);
+  },
 };
