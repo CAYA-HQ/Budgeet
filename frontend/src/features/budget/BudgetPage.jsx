@@ -1,15 +1,21 @@
-
 import { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useFinance } from "../../context/FinancialContext";
 import BudgetSetup from "../../components/BudgetSetup";
-// We can use individual Category cards for the new layout grid
-import CategoryBudgetCard from "../../components/CategoryBudgetCard"; 
+import CategoryBudgetCard from "../../components/CategoryBudgetCard";
 import BottomNav from "../../components/BottomNav";
 import AddExpense from "../../components/AddExpense";
 import AddIncome from "../../components/AddIncome";
+import { financeApi } from "../../lib/api";
 import { currentMonth, formatNaira } from "../../lib/utils";
 import "../../styles/dashboard.css";
+
+const CATEGORY_ICONS = {
+  food: "🛒", bills: "⚡", family: "👨‍👩‍👧", healthcare: "💊",
+  fuel: "⛽", phone: "📱", education: "📚", entertainment: "🎮",
+  shopping: "🛍️", travel: "✈️", socializing: "☕", withdrawal: "🏦",
+  transfer: "↔️", transport: "🚗", housing: "🏠", miscellaneous: "🎁",
+};
 
 function BudgetPage() {
   const { budget, totalSpent, remaining, loadingFinance, fetchFinanceData } = useFinance();
@@ -18,23 +24,30 @@ function BudgetPage() {
   const [showAddIncome, setShowAddIncome] = useState(false);
   const [fabOpen, setFabOpen] = useState(false);
 
+  // ── Real category data from backend ──
+  const [categories, setCategories] = useState([]);
+  const [loadingCats, setLoadingCats] = useState(false);
+
+  const month = currentMonth();
+
   useEffect(() => {
-    fetchFinanceData(currentMonth());
+    fetchFinanceData(month);
+    fetchCategories(month);
   }, [fetchFinanceData]);
 
-  const budgetAmount = budget?.amount ? Number(budget.amount) : null;
+  const fetchCategories = async (m) => {
+    setLoadingCats(true);
+    try {
+      const data = await financeApi.getCategoryBreakdown(m);
+      setCategories(data.categories || []);
+    } catch {
+      setCategories([]);
+    } finally {
+      setLoadingCats(false);
+    }
+  };
 
-  // Fallback category mock data matching the image if it doesn't exist in your context yet
-  const categoriesList = budget?.categories || [
-    { id: 1, name: "Food & Groceries", icon: "🛒", spent: 42000, total: 60000, color: "bg-blue-600" },
-    { id: 2, name: "Transport", icon: "🚗", spent: 28000, total: 30000, color: "bg-amber-500" },
-    { id: 3, name: "Entertainment", icon: "🎮", spent: 18500, total: 15000, color: "bg-red-600" },
-    { id: 4, name: "Bill & Utilities", icon: "⚡", spent: 22000, total: 50000, color: "bg-blue-600" },
-    { id: 5, name: "Shopping", icon: "🛍️", spent: 22000, total: 35000, color: "bg-blue-600" },
-    { id: 6, name: "Health", icon: "💊", spent: 6000, total: 18000, color: "bg-blue-600" },
-    { id: 7, name: "Education", icon: "📚", spent: 12000, total: 75000, color: "bg-blue-600" },
-    { id: 8, name: "Miscellaneous", icon: "🎁", spent: 12000, total: 17000, color: "bg-blue-600" },
-  ];
+  const budgetAmount = budget?.amount ? Number(budget.amount) : null;
 
   return (
     <div className="app-layout">
@@ -43,12 +56,12 @@ function BudgetPage() {
       <div className="main-content px-6 py-8 mb-12 max-w-7xl mx-auto w-full flex flex-col justify-between gap-4 ">
         <div className="page-header flex justify-between items-center">
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Budgets</h1>
-          <button 
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-colors shadow-sm"
-                  onClick={() => setShowBudgetSetup(true)}
-                >
-                  + New budget
-                </button>
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-colors shadow-sm"
+            onClick={() => setShowBudgetSetup(true)}
+          >
+            + New budget
+          </button>
         </div>
 
         {loadingFinance ? (
@@ -56,7 +69,6 @@ function BudgetPage() {
         ) : (
           <>
             {budgetAmount ? (
-              /* Top summary row matching Figma cards layout */
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col gap-4">
                   <span className="text-sm font-semibold text-slate-500">Total Budget</span>
@@ -64,48 +76,62 @@ function BudgetPage() {
                     {formatNaira(budgetAmount)}
                   </span>
                 </div>
-                
+
                 <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col gap-4">
                   <span className="text-sm font-semibold text-slate-500">Spent</span>
                   <span className="text-2xl font-bold tracking-tight text-red-600">
                     {formatNaira(totalSpent)}
                   </span>
                 </div>
-                
+
                 <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col gap-4">
                   <span className="text-sm font-semibold text-slate-500">Remaining</span>
-                  <span className="text-2xl font-bold tracking-tight text-green-600">
-                    {formatNaira(remaining)}
+                  <span className={`text-2xl font-bold tracking-tight ${remaining < 0 ? "text-red-600" : "text-green-600"}`}>
+                    {formatNaira(remaining ?? 0)}
                   </span>
                 </div>
               </div>
             ) : (
               <div className="bg-white p-6 rounded-2xl border border-slate-100 text-center">
-                <p className="text-slate-500">No budget set for {budget?.month || currentMonth()}.</p>
+                <p className="text-slate-500">No budget set for {budget?.month || month}.</p>
               </div>
             )}
 
-            {/* Categories Canvas Section */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-">
-              <div className="flex justify-between items-center">
+            {/* Categories Section */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+              <div className="flex justify-between items-center mb-4">
                 <div>
                   <h2 className="text-lg font-bold text-slate-800">Categories</h2>
-                  <p className="text-xs text-slate-400 font-medium mt-0.5">April 8 active categories</p>
+                  <p className="text-xs text-slate-400 font-medium mt-0.5">
+                    {categories.length} active {categories.length === 1 ? "category" : "categories"}
+                  </p>
                 </div>
-                
-                
               </div>
 
-              {/* Grid Layout for components */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {categoriesList.map((category) => (
-                  <CategoryBudgetCard 
-                    key={category.id} 
-                    category={category} 
-                    onEdit={() => setShowBudgetSetup(true)}
-                  />
-                ))}
-              </div>
+              {loadingCats ? (
+                <div className="loading-state">Loading categories…</div>
+              ) : categories.length === 0 ? (
+                <div className="text-center py-10 text-slate-400">
+                  <p className="text-sm font-medium">No expenses logged yet</p>
+                  <p className="text-xs mt-1">Add expenses to see your category breakdown</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {categories.map((cat) => (
+                    <CategoryBudgetCard
+                      key={cat.id}
+                      category={{
+                        ...cat,
+                        icon: CATEGORY_ICONS[cat.id] || "💳",
+                        total: budgetAmount
+                          ? Math.round(budgetAmount / categories.length)
+                          : null,
+                      }}
+                      onEdit={() => setShowBudgetSetup(true)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </>
         )}
@@ -127,10 +153,21 @@ function BudgetPage() {
         />
       )}
       {showAddExpense && (
-        <AddExpense onClose={() => { setShowAddExpense(false); toast.success("Expense added"); }} />
+        <AddExpense
+          onClose={() => {
+            setShowAddExpense(false);
+            fetchCategories(month);
+            toast.success("Expense added");
+          }}
+        />
       )}
       {showAddIncome && (
-        <AddIncome onClose={() => { setShowAddIncome(false); toast.success("Income added"); }} />
+        <AddIncome
+          onClose={() => {
+            setShowAddIncome(false);
+            toast.success("Income added");
+          }}
+        />
       )}
     </div>
   );

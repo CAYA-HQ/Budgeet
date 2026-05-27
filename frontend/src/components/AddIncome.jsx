@@ -1,33 +1,45 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { financeApi } from '../lib/api'
+import { useFinance } from '../context/FinancialContext'
+import { currentMonth } from '../lib/utils'
 
 const incomeTypes = [
-  { id: 'weekly', label: 'Weekly' },
+  { id: 'weekly',  label: 'Weekly' },
   { id: 'monthly', label: 'Monthly' },
-  { id: 'yearly', label: 'Yearly' },
+  { id: 'yearly',  label: 'Yearly' },
 ]
 
-function AddIncome({ onClose, onSave }) {
-  const [amount, setAmount] = useState('')
+function AddIncome({ onClose }) {
+  const { fetchFinanceData } = useFinance()
+  const [amount, setAmount]           = useState('')
   const [description, setDescription] = useState('')
-  const [incomeType, setIncomeType] = useState(incomeTypes[1])
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+  const [incomeType, setIncomeType]   = useState(incomeTypes[1])
+  const [date, setDate]               = useState(new Date().toISOString().split('T')[0])
+  const [loading, setLoading]         = useState(false)
+  const [error, setError]             = useState('')
 
-  const handleSave = () => {
-    if (!amount) return
-    const income = {
-      amount: parseFloat(amount),
-      description,
-      incomeType: incomeType.id,
-      date,
-      time: new Date().toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      }),
+  const handleSave = async () => {
+    setError('')
+    if (!amount || Number(amount) <= 0) {
+      setError('Please enter a valid amount.')
+      return
     }
-    onSave(income)
-    onClose()
+    setLoading(true)
+    try {
+      await financeApi.addIncome({
+        amount:      parseFloat(amount),
+        description: description.trim(),
+        income_type: incomeType.id,   // ← backend field name: income_type not incomeType
+        date,
+      })
+      await fetchFinanceData(currentMonth())
+      onClose()
+    } catch (err) {
+      setError(err.message || 'Failed to save income.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -43,6 +55,10 @@ function AddIncome({ onClose, onSave }) {
         </div>
 
         <div className="bottom-sheet-body">
+          {error && (
+            <div className="form-error" style={{ marginBottom: 12 }}>{error}</div>
+          )}
+
           <div className="form-group">
             <label>Enter Amount</label>
             <div className="amount-input-wrapper">
@@ -76,6 +92,7 @@ function AddIncome({ onClose, onSave }) {
                   key={type.id}
                   className={`income-type-btn ${incomeType.id === type.id ? 'active' : ''}`}
                   onClick={() => setIncomeType(type)}
+                  type="button"
                 >
                   {type.label}
                 </button>
@@ -93,8 +110,12 @@ function AddIncome({ onClose, onSave }) {
             />
           </div>
 
-          <button className="add-expense-btn" onClick={handleSave}>
-            Save Income
+          <button
+            className="add-expense-btn"
+            onClick={handleSave}
+            disabled={loading}
+          >
+            {loading ? 'Saving…' : 'Save Income'}
           </button>
         </div>
       </div>
