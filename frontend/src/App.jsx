@@ -54,11 +54,11 @@ function AppRoutes() {
       <Route
         path="/dashboard"
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <FinanceProvider>
               <DashboardLayout />
             </FinanceProvider>
-          // </PrivateRoute>
+           </PrivateRoute>
         }
       >
         <Route index element={<DashboardPage />} />
