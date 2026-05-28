@@ -29,9 +29,11 @@ def _current_month() -> str:
 def budget(request):
     """
     POST /api/finance/budget/
+        Body: { amount, month }   (month defaults to current month if omitted)
+        Creates or updates the budget for that month.
 
     GET /api/finance/budget/
-        
+        Returns the budget for the current month (or null).
     """
     user = request.user
 
@@ -69,9 +71,20 @@ def budget(request):
 def expenses(request):
     """
     POST /api/finance/expenses/
-        
+        Body: { label, amount, category, date }
+        Adds a new expense for the authenticated user.
+
     GET /api/finance/expenses/
-        
+        Returns:
+        {
+            budget: { amount, month } | null,
+            expenses: [...],
+            total_spent: <number>,
+            remaining: <number> | null,
+        }
+
+        Optional query params:
+            ?month=2025-05   (filter expenses to a specific month, default = current)
     """
     user = request.user
 
@@ -222,7 +235,13 @@ def income_detail(request, pk):
 def summary(request):
     """
     GET /api/finance/summary/
-    
+    Optional ?month=YYYY-MM  (default = current month)
+
+    Returns a full financial snapshot for the month:
+    {
+        month, budget, total_spent, remaining,
+        total_income, net, expenses, incomes
+    }
     """
     user = request.user
     month = request.query_params.get("month", _current_month())
@@ -255,3 +274,182 @@ def summary(request):
             "incomes": IncomeSerializer(income_qs, many=True).data,
         }
     )
+
+
+
+# ─── Category Breakdown ───────────────────────────────────────────────────────
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def category_breakdown(request):
+    """
+    GET /api/finance/categories/?month=2025-05
+
+    Returns spending grouped by category for the given month.
+    Used by BudgetPage to show real category cards instead of mock data.
+
+    Response:
+    {
+        "month": "2025-05",
+        "categories": [
+            {
+                "id": "food",
+                "name": "Food",
+                "spent": 42000.00,
+                "count": 8
+            },
+            ...
+        ]
+    }
+    """
+    user = request.user
+    month = request.query_params.get("month", _current_month())
+
+    try:
+        year_str, month_str = month.split("-")
+        year, mon = int(year_str), int(month_str)
+    except ValueError:
+        return Response(
+            {"message": "Invalid month format. Use YYYY-MM."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    # All valid category labels for display
+    CATEGORY_LABELS = {
+        "food":          "Food",
+        "bills":         "Bills/Utilities",
+        "family":        "Family",
+        "healthcare":    "Healthcare",
+        "fuel":          "Fuel",
+        "phone":         "Phone/Internet",
+        "education":     "Education",
+        "entertainment": "Entertainment",
+        "shopping":      "Shopping",
+        "travel":        "Travel",
+        "socializing":   "Socializing",
+        "withdrawal":    "Withdrawal",
+        "transfer":      "Transfer",
+        "transport":     "Transportation",
+        "housing":       "Housing",
+        "miscellaneous": "Miscellaneous",
+    }
+
+    expense_qs = Expense.objects.filter(
+        user=user,
+        date__year=year,
+        date__month=mon,
+    )
+
+    # Group by category
+    from django.db.models import Count
+    breakdown = (
+        expense_qs
+        .values("category")
+        .annotate(spent=Sum("amount"), count=Count("id"))
+        .order_by("-spent")
+    )
+
+    categories = [
+        {
+            "id":    item["category"],
+            "name":  CATEGORY_LABELS.get(item["category"], item["category"].title()),
+            "spent": float(item["spent"]),
+            "count": item["count"],
+        }
+        for item in breakdown
+    ]
+
+    return Response({
+        "month": month,
+        "categories": categories,
+    })
+
+
+# ─── Search ───────────────────────────────────────────────────────────────────
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def search(request):
+    """
+    GET /api/finance/search/?q=groceries
+    GET /api/finance/search/?q=food&type=expense
+    GET /api/finance/search/?q=salary&type=income
+    GET /api/finance/search/?q=groceries&month=2025-05
+
+    Searches expenses and/or incomes for the authenticated user.
+
+    Query params:
+        q        (required) — search term, matched against label/description
+        type     (optional) — "expense" | "income" | "all" (default)
+        month    (optional) — filter to a specific YYYY-MM month
+        category (optional) — filter expenses by category
+
+    Response:
+    {
+        "query": "groceries",
+        "total_results": 3,
+        "expenses": [...],
+        "incomes": [...]
+    }
+    """
+    user = request.user
+    query = request.query_params.get("q", "").strip()
+    result_type = request.query_params.get("type", "all")   # expense | income | all
+    month = request.query_params.get("month")
+    category = request.query_params.get("category")
+
+    if not query:
+        return Response(
+            {"message": "Search query 'q' is required."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    expense_results = []
+    income_results = []
+
+    # ── Search expenses ──────────────────────────────────────────────────────
+    if result_type in ("expense", "all"):
+        exp_qs = Expense.objects.filter(
+            user=user,
+            label__icontains=query,
+        )
+        if month:
+            try:
+                year_str, month_str = month.split("-")
+                exp_qs = exp_qs.filter(
+                    date__year=int(year_str),
+                    date__month=int(month_str),
+                )
+            except ValueError:
+                pass
+        if category:
+            exp_qs = exp_qs.filter(category=category)
+
+        expense_results = ExpenseSerializer(exp_qs, many=True).data
+
+    # ── Search incomes ───────────────────────────────────────────────────────
+    if result_type in ("income", "all"):
+        inc_qs = Income.objects.filter(
+            user=user,
+            description__icontains=query,
+        )
+        if month:
+            try:
+                year_str, month_str = month.split("-")
+                inc_qs = inc_qs.filter(
+                    date__year=int(year_str),
+                    date__month=int(month_str),
+                )
+            except ValueError:
+                pass
+
+        income_results = IncomeSerializer(inc_qs, many=True).data
+
+    total = len(expense_results) + len(income_results)
+
+    return Response({
+        "query": query,
+        "total_results": total,
+        "expenses": expense_results,
+        "incomes": income_results,
+    })
