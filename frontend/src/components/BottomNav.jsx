@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Home, Lightbulb } from 'lucide-react'
+import { Home, Wallet } from 'lucide-react'
 import FABMenu from './FABMenu'
 
 function BottomNav({ fabOpen, setFabOpen, onAddExpense, onAddIncome }) {
@@ -23,11 +23,11 @@ function BottomNav({ fabOpen, setFabOpen, onAddExpense, onAddIncome }) {
       />
 
       <Link
-        to="/dashboard/insights"
-        className={`bottom-nav-item ${location.pathname === '/insights' ? 'active' : ''}`}
+        to="/dashboard/budget"
+        className={`bottom-nav-item ${location.pathname === '/dashboard/budget' ? 'active' : ''}`}
       >
-        <Lightbulb size={24} />
-        <span>Insights</span>
+        <Wallet size={24} />
+        <span>Budget</span>
       </Link>
     </div>
   )
