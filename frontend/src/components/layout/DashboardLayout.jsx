@@ -13,12 +13,7 @@ function DashboardLayout() {
     setFabOpen(false)
     setAddExpenseTrigger((prev) => !prev)
   }
-
-  const handleAddIncome = () => {
-    setFabOpen(false)
-    setAddIncomeTrigger((prev) => !prev)
-  }
-
+  
   return (
     <div className="app flex items-stretch h-screen overflow-hidden">
       <SideNav />

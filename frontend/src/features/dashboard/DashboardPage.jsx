@@ -4,12 +4,15 @@ import FilterTabs from '../../components/FilterTabs'
 import TotalSpendCard from '../../components/TotalSpendCard'
 import BudgetProgressBar from '../../components/BudgetProgressBar'
 import TransactionList from '../../components/TransactionList'
+import BottomNav from '../../components/BottomNav'
 import AddExpense from '../../components/AddExpense'
 import AddIncome from '../../components/AddIncome'
 import BudgetSetup from '../../components/BudgetSetup'
 import TransactionDetail from '../../components/TransactionDetail'
 import CalendarView from '../../components/CalendarView'
+import SearchResults from '../../components/SearchResults'
 import { useFinance } from '../../context/FinancialContext'
+import { useSearch } from '../../hooks/useSearch'
 import { currentMonth } from '../../lib/utils'
 import '../../styles/dashboard.css'
 
@@ -44,6 +47,7 @@ const toastStyle = {
 }
 
 function DashboardPage() {
+  // ── Real data from FinanceContext ──
   const {
     budget,
     expenses,
@@ -53,20 +57,27 @@ function DashboardPage() {
     fetchFinanceData,
   } = useFinance()
 
-  const [activeFilter, setActiveFilter] = useState('today')
-  const [showAddExpense, setShowAddExpense] = useState(false)
-  const [showAddIncome, setShowAddIncome] = useState(false)
-  const [showBudgetSetup, setShowBudgetSetup] = useState(false)
-  const [selectedTransaction, setSelectedTransaction] = useState(null)
-  const [editingTransaction, setEditingTransaction] = useState(null)
+  // ── Search hook — must be inside the component ──
+  const { query, setQuery, results: searchResults, loading: searchLoading } = useSearch()
 
+  // ── UI state ──
+  const [activeFilter, setActiveFilter]           = useState('today')
+  const [fabOpen, setFabOpen]                     = useState(false)
+  const [showAddExpense, setShowAddExpense]        = useState(false)
+  const [showAddIncome, setShowAddIncome]          = useState(false)
+  const [showBudgetSetup, setShowBudgetSetup]     = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState(null)
+  const [editingTransaction, setEditingTransaction]   = useState(null)
+
+  // Load data on mount
   useEffect(() => {
     fetchFinanceData(currentMonth())
   }, [fetchFinanceData])
 
+  // Merge expenses + incomes into a unified list
   const allTransactions = [
     ...expenses.map((e) => ({ ...e, type: 'expense', name: e.label })),
-    ...incomes.map((i) => ({ ...i, type: 'income', name: i.description || 'Income' })),
+    ...incomes.map((i) => ({ ...i, type: 'income',  name: i.description || 'Income' })),
   ].sort((a, b) => new Date(b.date) - new Date(a.date))
 
   const filteredTransactions = filterByDate(allTransactions, activeFilter)
@@ -76,39 +87,51 @@ function DashboardPage() {
     activeFilter
   ).reduce((sum, t) => sum + Number(t.amount), 0)
 
-  const handleDeleteTransaction = (transaction) => {
-    setSelectedTransaction(null)
-    toast.success('Expense deleted')
-  }
-
   return (
-    <div className="main-content">
+    <div className="app-layout">
       <Toaster position="top-center" toastOptions={{ duration: 2500, ...toastStyle }} />
 
-      <FilterTabs onFilterChange={setActiveFilter} />
+      <div className="main-content">
+        <FilterTabs onFilterChange={setActiveFilter} />
 
-      <TotalSpendCard amount={filteredTotalSpend} />
+        <TotalSpendCard amount={filteredTotalSpend} />
 
-      <BudgetProgressBar
-        spent={totalSpent}
-        total={budget?.amount ? Number(budget.amount) : null}
-        onTap={() => setShowBudgetSetup(true)}
+        <BudgetProgressBar
+          spent={totalSpent}
+          total={budget?.amount ? Number(budget.amount) : null}
+          onTap={() => setShowBudgetSetup(true)}
+        />
+
+        {/* Search results take priority when user is typing */}
+        {query.trim() ? (
+          <SearchResults
+            results={searchResults}
+            loading={searchLoading}
+            query={query}
+            onTapTransaction={setSelectedTransaction}
+          />
+        ) : loadingFinance ? (
+          <div className="loading-state">Loading transactions…</div>
+        ) : activeFilter === 'calendar' ? (
+          <CalendarView
+            transactions={allTransactions}
+            onTapTransaction={setSelectedTransaction}
+          />
+        ) : (
+          <TransactionList
+            transactions={filteredTransactions}
+            onAddExpense={() => { setFabOpen(false); setShowAddExpense(true) }}
+            onTapTransaction={setSelectedTransaction}
+          />
+        )}
+      </div>
+
+      <BottomNav
+        fabOpen={fabOpen}
+        setFabOpen={setFabOpen}
+        onAddExpense={() => { setFabOpen(false); setShowAddExpense(true) }}
+        onAddIncome={() => { setFabOpen(false); setShowAddIncome(true) }}
       />
-
-      {loadingFinance ? (
-        <div className="loading-state">Loading transactions…</div>
-      ) : activeFilter === 'calendar' ? (
-        <CalendarView
-          transactions={allTransactions}
-          onTapTransaction={setSelectedTransaction}
-        />
-      ) : (
-        <TransactionList
-          transactions={filteredTransactions}
-          onAddExpense={() => setShowAddExpense(true)}
-          onTapTransaction={setSelectedTransaction}
-        />
-      )}
 
       {showAddExpense && (
         <AddExpense
@@ -155,7 +178,6 @@ function DashboardPage() {
             setEditingTransaction(selectedTransaction)
             setSelectedTransaction(null)
           }}
-          onDelete={() => handleDeleteTransaction(selectedTransaction)}
         />
       )}
     </div>
