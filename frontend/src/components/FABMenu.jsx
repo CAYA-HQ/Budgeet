@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { Plus, X, Receipt, Wallet } from 'lucide-react'
 
 function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
+  const navigate = useNavigate()
+
   const handleAddExpense = () => {
     onToggle(false)
     if (onAddExpense) onAddExpense()
@@ -9,6 +12,7 @@ function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
   const handleAddIncome = () => {
     onToggle(false)
     if (onAddIncome) onAddIncome()
+    console.log("Button was clicked")
   }
 
   return (
@@ -19,9 +23,9 @@ function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
             <Wallet size={18} />
             <span>Add Income</span>
           </button>
-          <button className="fab-option" onClick={handleAddExpense}>
+          <button className="fab-option" onClick={() => navigate('/dashboard/expenses')}>
             <Receipt size={18} />
-            <span>Add Expense</span>
+            <span>Expense</span>
           </button>
         </div>
       )}

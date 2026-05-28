@@ -9,15 +9,15 @@ function DashboardLayout() {
   const [addExpenseTrigger, setAddExpenseTrigger] = useState(false)
   const [addIncomeTrigger, setAddIncomeTrigger] = useState(false)
 
-  const handleAddExpense = () => {
-    setFabOpen(false)
-    setAddExpenseTrigger((prev) => !prev)
-  }
+  // const handleAddExpense = () => {
+  //   setFabOpen(false)
+  //   setAddExpenseTrigger((prev) => !prev)
+  // }
 
-  const handleAddIncome = () => {
-    setFabOpen(false)
-    setAddIncomeTrigger((prev) => !prev)
-  }
+  // const handleAddIncome = () => {
+  //   setFabOpen(false)
+  //   setAddIncomeTrigger((prev) => !prev)
+  // }
 
   return (
     <div className="app flex items-stretch h-screen overflow-hidden">
@@ -26,12 +26,12 @@ function DashboardLayout() {
         <DashboardHeader />
         <Outlet context={{ addExpenseTrigger, addIncomeTrigger }} />
       </main>
-      <BottomNav
+      {/* <BottomNav
         fabOpen={fabOpen}
         setFabOpen={setFabOpen}
         onAddExpense={handleAddExpense}
         onAddIncome={handleAddIncome}
-      />
+      /> */}
     </div>
   )
 }
