@@ -1,0 +1,102 @@
+/* ================================
+   EXPENSES PAGE
+================================ */
+.expenses-page {
+  padding: 20px 16px;
+  padding-bottom: 100px;
+}
+
+.expenses-header {
+  margin-bottom: 24px;
+}
+
+.expenses-header h1 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.expenses-total {
+  font-size: 15px;
+  color: #78778B;
+  font-weight: 500;
+}
+
+/* ================================
+   SEARCH
+================================ */
+.expenses-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.search-icon {
+  color: #78778B;
+  flex-shrink: 0;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 14px;
+  color: #000000;
+  width: 100%;
+  font-family: inherit;
+}
+
+.search-input::placeholder {
+  color: #78778B;
+}
+
+/* ================================
+   CATEGORY FILTER
+================================ */
+.expenses-categories {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+  margin-bottom: 20px;
+}
+
+.expenses-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.expense-category-btn {
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: none;
+  background-color: #f5f5f5;
+  color: #78778B;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.expense-category-btn.active {
+  background-color: #000000;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ================================
+   EXPENSES LIST
+================================ */
+.expenses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}

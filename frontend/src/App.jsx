@@ -13,6 +13,7 @@ import DashboardLayout from "./components/layout/DashboardLayout";
 import AuthLayout from "./components/layout/AuthLayout";
 import SignIn from "./features/auth/SignIn";
 import SignUp from "./features/auth/SignUp";
+import ProfilePage from "./features/profile/ProfilePage"
 
 /** Redirects unauthenticated users to /auth/signin */
  function PrivateRoute({ children }) {
@@ -57,13 +58,14 @@ function AppRoutes() {
             <FinanceProvider>
               <DashboardLayout />
             </FinanceProvider>
-          </PrivateRoute>
+           </PrivateRoute>
         }
       >
         <Route index element={<DashboardPage />} />
         <Route path="expenses" element={<ExpensesPage />} />
         <Route path="budget" element={<BudgetPage />} />
         <Route path="insights" element={<InsightsPage />} />
+        <Route path="profile" element={<ProfilePage />} />
       </Route>
     </Routes>
   );
