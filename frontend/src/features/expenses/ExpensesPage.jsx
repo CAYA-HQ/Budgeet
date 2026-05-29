@@ -6,6 +6,7 @@ import AddIncome from "../../components/AddIncome";
 import BottomNav from "../../components/BottomNav";
 import { currentMonth, formatNaira } from "../../lib/utils";
 import "../../styles/dashboard.css";
+import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 
 // Dynamic meta parameters for the row list matching the image's styling palette
 const EXPENSE_ROW_META = {
@@ -104,7 +105,7 @@ function ExpensesPage() {
                     <span className="text-xs text-slate-400 font-medium mt-1">{expenses?.length || 0} transactions</span>
                   </div>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center font-bold text-lg">📉</div>
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center font-bold text-lg">< TrendingDown /></div>
               </div>
 
               <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-start">
@@ -115,7 +116,7 @@ function ExpensesPage() {
                     <span className="text-xs text-slate-400 font-medium mt-1">Across selected range</span>
                   </div>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">💳</div>
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><Wallet /></div>
               </div>
 
               <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-start">
@@ -126,7 +127,7 @@ function ExpensesPage() {
                     <span className="text-xs text-slate-400 font-medium mt-1">{biggestExpenseLabel}</span>
                   </div>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-lg">📈</div>
+                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-lg"><TrendingUp /></div>
               </div>
             </div>
 
