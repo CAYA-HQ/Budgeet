@@ -141,3 +141,47 @@ export const searchApi = {
     return request(`/api/finance/search/?${params.toString()}`);
   },
 };
+
+// ─── Profile API ──────────────────────────────────────────────────────────────
+ 
+export const profileApi = {
+  /**
+   * GET /api/profile/
+   * Returns: { id, name, email, avatar_url }
+   */
+  get: () =>
+    request("/api/profile/"),
+ 
+  /**
+   * PATCH /api/profile/
+   * Returns: updated profile object
+   */
+  update: (payload) =>
+    request("/api/profile/", { method: "PATCH", body: payload }),
+ 
+  /**
+   * POST /api/profile/avatar/
+   */
+  uploadAvatar: (file) => {
+    const formData = new FormData();
+    formData.append("avatar", file);
+    return fetch(`${BASE_URL}/api/profile/avatar/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        // browser handles it for multipart
+      },
+      body: formData,
+    }).then(async (res) => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || "Upload failed.");
+      return data;
+    });
+  },
+ 
+  /**
+   * POST /api/profile/change-password/
+   */
+  changePassword: (payload) =>
+    request("/api/profile/change-password/", { method: "POST", body: payload }),
+};
