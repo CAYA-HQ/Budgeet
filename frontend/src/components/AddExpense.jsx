@@ -3,6 +3,7 @@ import { X, ChevronRight } from 'lucide-react'
 import CategoryPicker, { categories } from './CategoryPicker'
 import { financeApi } from "../lib/api";
 import { useFinance } from "../context/FinancialContext";
+import { toast} from "react-hot-toast"
 // import { currentMonth } from "../lib/utils";
 
 function AddExpense({ onClose, onSave, existing }) {
@@ -52,6 +53,7 @@ function AddExpense({ onClose, onSave, existing }) {
           onSave(result || payload);
         }
         onClose();
+        toast.success("Expense added");
       } catch (err) {
         setError(err.response?.data?.message || err.message || "Failed to save expense.");
       } finally {

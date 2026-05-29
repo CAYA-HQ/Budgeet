@@ -333,7 +333,8 @@ function DashboardPage() {
                             cy="50%"
                             innerRadius={40}
                             outerRadius={55}
-                            paddingAngle={3}
+                            paddingAngle={6}
+                            cornerRadius={5}
                             dataKey="value"
                           >
                             {categorySplitData.map((entry, index) => (
@@ -486,7 +487,6 @@ function DashboardPage() {
             setShowAddExpense(false);
             fetchFinanceData(currentMonth());
             loadCategoryBreakdown();
-            toast.success("Expense added");
           }}
         />
       )}
