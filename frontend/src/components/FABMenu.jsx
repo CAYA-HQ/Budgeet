@@ -12,7 +12,6 @@ function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
   const handleAddIncome = () => {
     onToggle(false)
     if (onAddIncome) onAddIncome()
-    console.log("Button was clicked")
   }
 
   return (

@@ -7,12 +7,17 @@ import { useAuth } from "../../context/AuthContext";
 import { notificationsApi } from "../../lib/api";
 import { useSearch } from "../../hooks/useSearch";
 import { formatNaira } from "../../lib/utils";
+import AddIncome from "../AddIncome";
+
+
 
 function DashboardHeader() {
-  const [showSearchBar, setShowSearchBar]               = useState(false);
+  const [showAddIncome, setShowAddIncome] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [unreadCount, setUnreadCount]                   = useState(0);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { user }  = useAuth();
+
   const inputRef  = useRef(null);
   const wrapperRef = useRef(null);
 
@@ -53,6 +58,11 @@ function DashboardHeader() {
     setShowNotificationModal((v) => !v);
     if (!showNotificationModal) setUnreadCount(0);
   };
+
+  //  useEffect(() => {
+  //     fetchFinanceData(currentMonth());
+  //     loadCategoryBreakdown();
+  //   }, [fetchFinanceData]);
 
   const handleClose = () => {
     setShowSearchBar(false);
@@ -134,7 +144,9 @@ function DashboardHeader() {
             ) : results.length === 0 ? (
               <div className="px-4 py-8 text-center text-sm text-gray-400">
                 <Search size={28} className="mx-auto mb-2 opacity-20" />
-                <p className="font-medium text-gray-600">No results for &quot;{query}&quot;</p>
+                <p className="font-medium text-gray-600">
+                  No results for &quot;{query}&quot;
+                </p>
                 <p className="text-xs mt-1">Try a different keyword</p>
               </div>
             ) : (
@@ -162,13 +174,15 @@ function DashboardHeader() {
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{
-                        background: item.type === "expense" ? "#fff0f0" : "#f0fdf4",
+                        background:
+                          item.type === "expense" ? "#fff0f0" : "#f0fdf4",
                       }}
                     >
-                      {item.type === "expense"
-                        ? <TrendingDown size={14} color="#ef4444" />
-                        : <TrendingUp   size={14} color="#22c55e" />
-                      }
+                      {item.type === "expense" ? (
+                        <TrendingDown size={14} color="#ef4444" />
+                      ) : (
+                        <TrendingUp size={14} color="#22c55e" />
+                      )}
                     </div>
 
                     {/* Info */}
@@ -184,9 +198,12 @@ function DashboardHeader() {
                     {/* Amount */}
                     <span
                       className="text-sm font-bold flex-shrink-0"
-                      style={{ color: item.type === "expense" ? "#ef4444" : "#22c55e" }}
+                      style={{
+                        color: item.type === "expense" ? "#ef4444" : "#22c55e",
+                      }}
                     >
-                      {item.type === "expense" ? "−" : "+"}{formatNaira(item.amount)}
+                      {item.type === "expense" ? "−" : "+"}
+                      {formatNaira(item.amount)}
                     </span>
                   </div>
                 ))}
@@ -197,26 +214,49 @@ function DashboardHeader() {
       </div>
 
       {/* ── Right side: Bell + Avatar ── */}
-      <div className={`flex items-center gap-4 h-full ${showSearchBar ? "hidden md:flex" : "flex"}`}>
-        {/* Bell */}
-        <div className="relative cursor-pointer" onClick={handleNotificationClick}>
-          {unreadCount > 0 && (
-            <span
-              className={`notification-label bg-[var(--budgeet-danger)] text-[10px] text-white font-bold absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center z-10 ${styles.notificationLabel}`}
-            >
-              {unreadCount > 99 ? "99+" : unreadCount}
-            </span>
-          )}
-          <Bell size={20} className="text-gray-500 hover:text-black transition-colors" />
+      <div className="flex gap-4">
+        <div
+          className={`flex items-center gap-4 h-full ${showSearchBar ? "hidden md:flex" : "flex"}`}
+        >
+          {/* Bell */}
+          <div
+            className="relative cursor-pointer"
+            onClick={handleNotificationClick}
+          >
+            {unreadCount > 0 && (
+              <span
+                className={`notification-label bg-[var(--budgeet-danger)] text-[10px] text-white font-bold absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center z-10 ${styles.notificationLabel}`}
+              >
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            )}
+            <Bell
+              size={20}
+              className="text-gray-500 hover:text-black transition-colors"
+            />
+          </div>
+
+          <GreetingHeader name={user?.name || "Explorer"} />
         </div>
-
-        <GreetingHeader name={user?.name || "Explorer"} />
+        <button 
+          className={`add-income-btn hidden md:flex ${styles.addIncomeBtn}`} 
+          onClick={() => setShowAddIncome(true)}
+        >
+          <span>+ Add Income</span>
+        </button>
       </div>
-
       <NotificationModal
         isModalOpen={showNotificationModal}
         setIsModalOpen={setShowNotificationModal}
       />
+
+      {showAddIncome && (
+              <AddIncome
+                onClose={() => {
+                  setShowAddIncome(false);
+                }}
+              />
+            )}
     </div>
   );
 }

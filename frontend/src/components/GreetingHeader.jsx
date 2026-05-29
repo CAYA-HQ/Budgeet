@@ -81,7 +81,7 @@ function GreetingHeader({ name }) {
       {/* ── Trigger button ── */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-gray-100 transition-colors"
+        className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
         style={{ outline: "none" }}
       >
         <Avatar size={34} textSize="text-sm" />

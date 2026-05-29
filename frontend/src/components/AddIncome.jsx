@@ -3,6 +3,7 @@ import { X } from 'lucide-react'
 import { financeApi } from '../lib/api'
 import { useFinance } from '../context/FinancialContext'
 import { currentMonth } from '../lib/utils'
+import {toast} from "react-hot-toast";
 
 const incomeTypes = [
   { id: 'weekly',  label: 'Weekly' },
@@ -32,9 +33,11 @@ function AddIncome({ onClose }) {
         description: description.trim(),
         income_type: incomeType.id,   // ← backend field name: income_type not incomeType
         date,
+        
       })
       await fetchFinanceData(currentMonth())
       onClose()
+      toast.success('Income added successfully')
     } catch (err) {
       setError(err.message || 'Failed to save income.')
     } finally {

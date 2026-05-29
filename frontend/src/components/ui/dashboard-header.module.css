@@ -15,3 +15,72 @@
     padding-inline: 1rem;
     }
 }
+
+.addIncomeBtn {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    padding: 10px 20px;
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+
+    box-shadow:
+      0 10px 25px rgba(37, 99, 235, 0.25),
+      inset 0 1px 0 rgba(255,255,255,0.2);
+
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .addIncomeBtn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 14px 30px rgba(37, 99, 235, 0.35),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  .addIncomeBtn:active {
+    transform: scale(0.98);
+  }
+
+  /* Animated blue glow */
+  .addIncomeBtn::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    
+    background: radial-gradient(
+      circle,
+      rgba(255,255,255,0.35) 0%,
+      rgba(255,255,255,0) 60%
+    );
+
+    animation: glowMove 4s linear infinite;
+  }
+
+  .addIncomeBtn span {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes glowMove {
+    0% {
+      transform: translateX(-30%) translateY(-20%);
+    }
+    50% {
+      transform: translateX(30%) translateY(20%);
+    }
+    100% {
+      transform: translateX(-30%) translateY(-20%);
+    }
+  }
