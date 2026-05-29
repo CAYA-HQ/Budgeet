@@ -34,12 +34,12 @@ function Header() {
         </h2>
       </div>
       <div className="cta-bx flex gap-2">
-        <button
+        {/* <button
           className="cta text-sm md:text-base font-normal md:font-semibold cursor-pointer"
           onClick={handleGuestClick}
         >
           Demo
-        </button>
+        </button> */}
         <button className="to-dashboard">
           {
             isLoggedIn && <Link to="/dashboard"> Dashbaord </Link>

@@ -59,11 +59,6 @@ function DashboardHeader() {
     if (!showNotificationModal) setUnreadCount(0);
   };
 
-  //  useEffect(() => {
-  //     fetchFinanceData(currentMonth());
-  //     loadCategoryBreakdown();
-  //   }, [fetchFinanceData]);
-
   const handleClose = () => {
     setShowSearchBar(false);
     clear();

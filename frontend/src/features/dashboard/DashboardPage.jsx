@@ -487,7 +487,6 @@ function DashboardPage() {
             setShowAddExpense(false);
             fetchFinanceData(currentMonth());
             loadCategoryBreakdown();
-            toast.success("Expense added");
           }}
         />
       )}

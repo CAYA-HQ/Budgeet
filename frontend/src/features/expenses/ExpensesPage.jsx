@@ -389,7 +389,7 @@ function ExpensesPage() {
         <AddExpense
           onClose={() => {
             setShowAddExpense(false);
-            toast.success("Expense added");
+            // toast.success("Expense added");
           }}
         />
       )}

@@ -11,7 +11,7 @@ function SideNav() {
     { path: "/dashboard", label: "Home", icon: Home },
     { path: "/dashboard/expenses", label: "Expenses", icon: Receipt },
     { path: "/dashboard/budget", label: "Budget", icon: Wallet },
-    { path: "/dashboard/insights", label: "Insights", icon: Lightbulb },
+    // { path: "/dashboard/insights", label: "Insights", icon: Lightbulb },
   ];
 
   return (
