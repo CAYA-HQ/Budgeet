@@ -60,9 +60,9 @@ The Budgeet Team
       <h2>Welcome, {first_name}! </h2>
       <p>Your account is all set up. Here's how to get started:</p>
       <div class="steps">
-        <p><span>💰</span> Set your <strong>monthly budget</strong></p>
-        <p><span>📝</span> Log your <strong>first expense</strong></p>
-        <p><span>📊</span> Check your <strong>spending insights</strong></p>
+        <p>• Set your <strong>monthly budget</strong></p>
+        <p>• Log your <strong>first expense</strong></p>
+        <p>• Check your <strong>spending insights</strong></p>
       </div>
       <a href="http://localhost:5173/dashboard" class="btn">Go to Dashboard →</a>
     </div>
@@ -86,3 +86,4 @@ The Budgeet Team
     except Exception as e:
         # Log but never block registration
         print(f"[Budgeet] Welcome email failed for {user.email}: {e}")
+        
