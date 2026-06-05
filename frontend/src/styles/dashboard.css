@@ -699,7 +699,7 @@
   appearance: none;
 }
 
-.add-expense-btn {
+.add-income-btn {
   background-color: #000000;
   color: #ffffff;
   border: none;
@@ -713,7 +713,7 @@
   transition: opacity 0.2s ease;
 }
 
-.add-expense-btn:active {
+.add-income-btn:active {
   opacity: 0.8;
 }
 /* ================================

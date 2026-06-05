@@ -496,7 +496,7 @@ function DashboardPage() {
           onClose={() => {
             setShowAddIncome(false);
             fetchFinanceData(currentMonth());
-            toast.success("Income added");
+            // toast.success("Income added");
           }}
         />
       )}

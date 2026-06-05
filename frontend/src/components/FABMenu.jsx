@@ -23,7 +23,7 @@ function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
         <div className="fab-options">
           {incomes?.length > 0 ? (
             <button
-              className="add-expense-btn w-[10rem] md:w-full"
+              className="add-income-btn w-[10rem] md:w-full"
               onClick={handleAddIncome}
               disabled={loading}
             >
@@ -31,7 +31,7 @@ function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
             </button>
           ) : (
             <button
-              className="add-expense-btn"
+              className="add-income-btn"
               onClick={handleAddIncome}
               disabled={loading}
             >
