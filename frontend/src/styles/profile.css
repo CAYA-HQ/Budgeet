@@ -1,16 +1,19 @@
-/* ================================
-   PROFILE PAGE
-================================ */
+/* ================================================================
+   PROFILE PAGE — Mobile-first, preserves original brand colors
+================================================================ */
+
+/* ── Page shell ── */
 .profile-page {
-  padding: 20px 16px;
-  padding-bottom: 100px;
-  max-width: 700px;
+  padding: 16px;
+  max-width: 900px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 48px;
 }
 
-/* ================================
-   PROFILE HEADER CARD
-================================ */
+/* ── Header card (original colorful style) ── */
 .profile-header-card {
   display: flex;
   align-items: center;
@@ -22,14 +25,17 @@
   background-size: 24px 24px;
   border-radius: 24px;
   padding: 24px;
-  margin-bottom: 20px;
   position: relative;
   overflow: hidden;
+  flex-wrap: wrap;  /* prevents overflow on very small screens */
 }
 
 .profile-avatar-wrapper {
   position: relative;
   flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
 }
 
 .profile-avatar {
@@ -62,20 +68,44 @@
   cursor: pointer;
 }
 
+.avatar-camera-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+.profile-avatar-wrapper:hover .avatar-camera-overlay {
+  opacity: 1;
+}
+
 .profile-header-info {
   flex: 1;
+  min-width: 0;  /* enables truncation */
 }
 
 .profile-header-info h1 {
   font-size: 18px;
   font-weight: 700;
   color: #ffffff;
-  margin-bottom: 4px;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profile-header-info p {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profile-edit-btn {
@@ -90,45 +120,50 @@
   font-family: inherit;
   transition: background-color 0.2s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
-
 .profile-edit-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ================================
-   PROFILE SECTION
-================================ */
+/* ── Grid – single column on mobile ── */
+.profile-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Section card – NO fixed height, content determines size ── */
 .profile-section {
   background-color: #ffffff;
   border-radius: 20px;
   padding: 20px;
-  margin-bottom: 16px;
-  height: 300px;
   border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.profile-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  /* No height: 300px – this was the key mobile fix */
 }
 
 .profile-section-title {
   font-size: 16px;
   font-weight: 700;
   color: #000000;
-  margin-bottom: 20px;
+  margin: 0 0 4px;
 }
 
-.profile-section-header .profile-section-title {
-  margin-bottom: 0;
+.profile-section-subtitle {
+  font-size: 13px;
+  color: #78778b;
+  margin: 0 0 20px;
 }
 
-/* ================================
-   PROFILE FIELDS
-================================ */
+.profile-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+/* ── Fields ── */
 .profile-fields {
   display: flex;
   flex-direction: column;
@@ -139,7 +174,6 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  width: 100%;
 }
 
 .profile-field label {
@@ -157,39 +191,38 @@
   font-size: 15px;
   font-weight: 500;
   color: #000000;
+  margin: 0;
   padding: 12px 0;
   border-bottom: 1px solid #f5f5f5;
 }
 
+/* ── Inputs ── */
 .profile-input {
+  width: 100%;
+  padding: 12px 16px;
   border: 1.5px solid #e0e0e0;
   border-radius: 12px;
-  padding: 12px 16px;
   font-size: 15px;
   color: #000000;
+  background: #fff;
   outline: none;
   font-family: inherit;
   transition: border-color 0.2s ease;
-  width: 100%;
+  box-sizing: border-box;
 }
-
 .profile-input:focus {
   border-color: var(--budgeet-primary);
 }
 
-/* ================================
-   PASSWORD
-================================ */
+/* ── Password input with toggle ── */
 .password-input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
-
 .password-input-wrapper .profile-input {
   padding-right: 48px;
 }
-
 .password-toggle {
   position: absolute;
   right: 16px;
@@ -199,6 +232,10 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  padding: 0;
+}
+.password-toggle:hover {
+  color: #555;
 }
 
 .password-hint {
@@ -207,6 +244,59 @@
   margin-top: 5px;
 }
 
+/* ── Action buttons row ── */
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.profile-cancel-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #e0e0e0;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+.profile-cancel-btn:hover:not(:disabled) {
+  background-color: #f5f5f5;
+}
+.profile-cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.profile-save-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background-color: var(--budgeet-primary);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s ease;
+}
+.profile-save-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+.profile-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Security section ── */
 .profile-change-password-btn {
   display: flex;
   align-items: center;
@@ -222,67 +312,10 @@
   font-family: inherit;
   transition: background-color 0.2s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
-
 .profile-change-password-btn:hover {
   background-color: #e0e0e0;
-}
-
-/* ================================
-   PROFILE ACTIONS
-================================ */
-.profile-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.profile-cancel-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1.5px solid #e0e0e0;
-  background-color: #ffffff;
-  color: #000000;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s ease;
-}
-
-.profile-save-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  background-color: var(--budgeet-primary);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: opacity 0.2s ease;
-}
-
-.profile-save-btn:active {
-  opacity: 0.8;
-}
-
-/* ================================
-   PROFILE GRID
-================================ */
-.profile-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.profile-section-subtitle {
-  font-size: 13px;
-  color: #78778b;
-  margin-top: 1px;
-  margin-bottom: 20px;
 }
 
 .profile-security-info {
@@ -290,32 +323,36 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 12px;
   padding: 32px 20px;
   text-align: center;
   color: #e0e0e0;
-  gap: 12px;
 }
-
 .profile-security-info p {
   font-size: 13px;
   line-height: 1.5;
   color: #78778b;
+  margin: 0;
 }
 
-/* ================================
-   DESKTOP BREAKPOINT
-================================ */
+/* ── Danger zone (used by component) ── */
+.profile-danger-zone {
+  border: 1px solid #fee2e2;
+  background: #fff5f5;
+}
+
+/* ── Desktop layout (2‑column grid, sticky side) ── */
 @media (min-width: 768px) {
   .profile-page {
     padding: 32px;
     max-width: 1100px;
-    margin: 0 auto;
+    gap: 24px;
   }
 
   .profile-header-card {
     padding: 32px;
     gap: 24px;
-    margin-bottom: 24px;
+    flex-wrap: nowrap;
   }
 
   .profile-avatar {
@@ -340,14 +377,11 @@
     align-items: start;
   }
 
-  .profile-grid-main {
-    min-width: 0;
-  }
-
+  .profile-grid-main,
   .profile-grid-side {
-    min-width: 0;
-    position: sticky;
-    top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 
   .profile-section {
@@ -371,12 +405,16 @@
   }
 
   .profile-grid-side .profile-actions {
-    display: flex;
-    flex-direction: row;
     grid-column: span 1;
   }
 
   .profile-field {
-    width: 300px;
+    width: 100%;
+  }
+
+  /* Sticky side panel */
+  .profile-grid-side {
+    position: sticky;
+    top: 80px;
   }
 }

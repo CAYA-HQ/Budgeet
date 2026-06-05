@@ -184,4 +184,23 @@ export const profileApi = {
    */
   changePassword: (payload) =>
     request("/api/profile/change-password/", { method: "POST", body: payload }),
+
+/**
+   * POST /api/account/delete/
+   */
+  deleteAccount: (password) =>
+    request("/api/account/delete/", { method: "POST", body: { password } }),
+};
+ 
+// ─── Account API ──────────────────────────────────────────────────────────────
+ 
+export const accountApi = {
+  /**
+   * POST /api/account/delete/
+   */
+  deleteAccount: (password) =>
+    request("/api/account/delete/", {
+      method: "POST",
+      body: { password },
+    }),
 };
