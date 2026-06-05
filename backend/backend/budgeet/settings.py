@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "apps.finance",
     "apps.notifications",
     "apps.profile",
+    "apps.delete_account",
 ]
 
 MIDDLEWARE = [
