@@ -26,7 +26,7 @@ export function FinanceProvider({ children }) {
       setBudget(expData.budget);
       setExpenses(expData.expenses || []);
       setTotalSpent(Number(expData.total_spent) || 0);
-      setIncomes(Number(incData.incomes) || []);
+      setIncomes(incData.incomes || []);
       setTotalIncome(Number(incData.total_income) || 0);
     } catch (err) {
       console.error("Failed to load finance data:", err.message);
