@@ -94,6 +94,7 @@ function DashboardPage() {
         };
       });
       setChartData(data);
+      // console.log(incomes)
     } catch {
       setChartData([]);
     } finally {
@@ -197,12 +198,12 @@ function DashboardPage() {
               {/* Income */}
               <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex justify-between items-start">
                 <div className="space-y-4">
-                  <span className="text-xs font-semibold text-slate-400 block">Total Income</span>
+                  <span className="text-xs font-semibold text-slate-400 block">Income</span>
                   <span className="text-2xl font-bold tracking-tight text-slate-900 block">
-                    {formatNaira(totalIncome || 0)}
+                    {formatNaira(incomes[0]?.amount || 0)}
                   </span>
                   <span className="text-xs text-slate-400 block">
-                    {incomes.length} income {incomes.length === 1 ? "entry" : "entries"}
+                    {incomes[0]?.description}
                   </span>
                 </div>
                 <div className="px-2 py-1 bg-green-50 rounded-lg text-[10px] font-bold text-green-600 flex items-center gap-0.5">
@@ -495,7 +496,7 @@ function DashboardPage() {
           onClose={() => {
             setShowAddIncome(false);
             fetchFinanceData(currentMonth());
-            toast.success("Income added");
+            // toast.success("Income added");
           }}
         />
       )}

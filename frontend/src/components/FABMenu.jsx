@@ -1,13 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import { Plus, X, Receipt, Wallet } from 'lucide-react'
+import { useFinance } from '../context/FinancialContext'
 
 function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
   const navigate = useNavigate()
 
-  const handleAddExpense = () => {
-    onToggle(false)
-    if (onAddExpense) onAddExpense()
-  }
+  const { incomes, loading } = useFinance()
+
+  // const handleAddExpense = () => {
+  //   onToggle(false)
+  //   if (onAddExpense) onAddExpense()
+  // }
 
   const handleAddIncome = () => {
     onToggle(false)
@@ -18,10 +21,23 @@ function FABMenu({ isOpen, onToggle, onAddExpense, onAddIncome }) {
     <div className="fab-menu">
       {isOpen && (
         <div className="fab-options">
-          <button className="fab-option" onClick={handleAddIncome}>
-            <Wallet size={18} />
-            <span>Add Income</span>
-          </button>
+          {incomes?.length > 0 ? (
+            <button
+              className="add-income-btn w-[10rem] md:w-full"
+              onClick={handleAddIncome}
+              disabled={loading}
+            >
+              {loading ? "Updating…" : "Update Income"}
+            </button>
+          ) : (
+            <button
+              className="add-income-btn"
+              onClick={handleAddIncome}
+              disabled={loading}
+            >
+              {loading ? "Saving…" : "Add Income"}
+            </button>
+          )}
           <button className="fab-option" onClick={() => navigate('/dashboard/expenses')}>
             <Receipt size={18} />
             <span>Expense</span>

@@ -699,22 +699,21 @@
   appearance: none;
 }
 
-.add-expense-btn {
+.add-income-btn {
   background-color: #000000;
   color: #ffffff;
   border: none;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  border-radius: 24px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  width: 100%;
   font-family: inherit;
   margin-top: 8px;
   transition: opacity 0.2s ease;
 }
 
-.add-expense-btn:active {
+.add-income-btn:active {
   opacity: 0.8;
 }
 /* ================================

@@ -397,7 +397,7 @@ function ExpensesPage() {
         <AddIncome
           onClose={() => {
             setShowAddIncome(false);
-            toast.success("Income added");
+            // toast.success("Income added");
           }}
         />
       )}

@@ -4,6 +4,7 @@ import GreetingHeader from "../GreetingHeader";
 import styles from "./dashboard-header.module.css";
 import NotificationModal from "../NotificationModal";
 import { useAuth } from "../../context/AuthContext";
+import { useFinance } from "../../context/FinancialContext";
 import { notificationsApi } from "../../lib/api";
 import { useSearch } from "../../hooks/useSearch";
 import { formatNaira } from "../../lib/utils";
@@ -17,6 +18,7 @@ function DashboardHeader() {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const { user }  = useAuth();
+  const { incomes } = useFinance();
 
   const inputRef  = useRef(null);
   const wrapperRef = useRef(null);
@@ -69,6 +71,11 @@ function DashboardHeader() {
       className={`dashboard-header h-16 shrink-0 bg-white border-b border-gray-100 px-6 flex items-center justify-between sticky top-0 z-50 ${styles.dashboardHeader}`}
     >
       {/* ── Mobile search toggle ── */}
+      {/* <button>
+        {
+          (incomes.length > 0 || incomes !== 0) ? "Update Income" : "Add Income"
+        }
+      </button> */}
       {!showSearchBar && (
         <button
           onClick={() => setShowSearchBar(true)}
@@ -237,7 +244,10 @@ function DashboardHeader() {
           className={`add-income-btn hidden md:flex ${styles.addIncomeBtn}`} 
           onClick={() => setShowAddIncome(true)}
         >
-          <span>+ Add Income</span>
+           {
+          (incomes?.length > 0) ? "Update Income" : "Add Income"
+        }
+          {/* <span>+ Add Income</span> */}
         </button>
       </div>
       <NotificationModal
